@@ -19,6 +19,7 @@ import EgovAboutHistory from "pages/about/EgovAboutHistory";
 import EgovAboutOrganization from "pages/about/EgovAboutOrganization";
 import EgovAboutLocation from "pages/about/EgovAboutLocation";
 import EqpList from "pages/about/eqpMgmtMList";
+import FsysLogQ from "pages/about/fsysLogQList";
 
 //INTRO
 import EgovIntroWork from "pages/intro/EgovIntroWork";
@@ -157,6 +158,7 @@ const SecondRoutes = () => {
         <Route path={URL.ABOUT_ORGANIZATION} element={<EgovAboutOrganization />} />
         <Route path={URL.ABOUT_LOCATION} element={<EgovAboutLocation />} />
         <Route path={URL.ABOUT_EqpList} element={<EqpList />} />
+        <Route path={URL.ABOUT_FsysLogQList} element={<FsysLogQ />} />
 
         {/* INTRO */}
         <Route path={URL.INTRO} element={<Navigate to={URL.INTRO_WORKS} />} />

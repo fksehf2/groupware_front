@@ -34,6 +34,11 @@ function EgovLeftNavAbout() {
               장비
             </NavLink>
           </li>
+          <li>
+            <NavLink to={URL.ABOUT_FsysLogQList} className={({ isActive }) => (isActive ? "cur" : "")}>
+              로그조회
+            </NavLink>
+          </li>
         </ul>
       </div>
     </div>

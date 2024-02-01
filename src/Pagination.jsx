@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./css/page.css";
-const Pagination = ({ total, page, setPage, limit }) => {
+const Pagination = ({ total, page, setPage, limit, fetchList }) => {
   const pageNums = Math.ceil(total / limit);
   console.log(pageNums);
+
+  useEffect(() => {
+    console.log(page, limit);
+    fetchList(page, limit);
+  }, [page]);
 
   return (
     <div id="page_navi" className="page_wrap">
@@ -13,7 +18,7 @@ const Pagination = ({ total, page, setPage, limit }) => {
         {Array(pageNums)
           .fill()
           .map((_, i) => (
-            <button className="page_nation" key={i + 1} onClick={() => setPage(i + 1) + 1}>
+            <button className="page_nation" key={i + 1} onClick={() => setPage(i + 1)}>
               {i + 1}
             </button>
           ))}
