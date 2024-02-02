@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const FsysLogQ = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const day = 13;
+  const [startDate, setStartDate] = useState(new Date().setDate(-day));
+  const [endDate, setEndDate] = useState(new Date());
   const [picker, setPicker] = useState(false);
 
   useEffect(() => {
     console.log(picker);
   }, [picker]);
+
   return (
     <div id="con_wrap">
       <div id="contents_info">
@@ -25,7 +27,7 @@ const FsysLogQ = () => {
               <div className="t_head">
                 <input type="hidden" id="boardKind" className="b_put" name="boardKind" value="C23008" />
                 {/* onkeydown="if(gfn_enterChk()) fn_queryFsysLogQList(1);" */}
-                <table className="tbl_type_hd" border="1" cellspacing="0">
+                <table className="tbl_type_hd" border="1" cellSpacing="0">
                   <caption>검색</caption>
                   <colgroup>
                     <col width="10%" />
@@ -66,37 +68,24 @@ const FsysLogQ = () => {
                         작성일자
                       </th>
                       <th scope="col">
-                        <input className="inpw30" type="text" name="searchRegFromDt" id="searchRegFromDt" />
-                        <img
-                          className="ui-datepicker-trigger"
-                          src="/images/main/bg_calendar.png"
-                          alt="..."
-                          title="..."
-                          style={{ cursor: "pointer", float: "left" }}
-                          onClick={() => setPicker(!picker)}
-                        />
-                        {picker && (
-                          <div>
-                            <DatePicker
-                              //selected={startDate}
-                              onChange={(date) => setStartDate(date)}
-                            />
-                          </div>
-                        )}
-                        <input className="inpw30" type="text" name="searchRegToDt" id="searchRegToDt" />
-                        <img
-                          className="ui-datepicker-trigger"
-                          src="/images/main/bg_calendar.png"
-                          alt="..."
-                          title="..."
-                          style={{ cursor: "pointer", float: "left" }}
-                          onClick={() => setPicker(!picker)}
-                        />
+                        <div className="col-wrp">
+                          {/* <input className="inpw30" type="text" name="searchRegFromDt" id="searchRegFromDt" />
+                          <img
+                            className="ui-datepicker-trigger"
+                            src="/images/main/bg_calendar.png"
+                            alt="..."
+                            title="..."
+                            style={{ cursor: "pointer", float: "left" }}
+                            onClick={() => setPicker(!picker)}
+                          /> */}
+                          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                        </div>
                       </th>
                       <th scope="col" className="hcolor">
                         메뉴명
                       </th>
-                      <th scope="col" colspan="3">
+                      <th scope="col" colSpan="3">
                         <input type="text" id="fsysLogQMenuNm" name="fsysLogQMenuNm" maxLength="200" className="inpw50" />
                       </th>
                     </tr>
@@ -131,7 +120,7 @@ const FsysLogQ = () => {
 
               {/* <!--------------목록----------------------> */}
               <div className="t_list">
-                <table className="tbl_type" border="1" cellspacing="0">
+                <table className="tbl_type" border="1" cellSpacing="0">
                   <caption>로그 조회</caption>
                   <colgroup>
                     {/* <!-- <col width="5%"> --> */}

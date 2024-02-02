@@ -1132,12 +1132,34 @@ select::-ms-expand {
 /* 리액트 관련 */
 .react-datepicker-wrapper,
 .react-datepicker__input-container {
-  display: inline-block;
-  vertical-align: top;
-  width: auto;
+  /* display: inline;
+  vertical-align: top; */
+  /* width: 100% !important; */
+  flex-direction: row-reverse;
 }
 
-/* 리액트 관련 */
-.react-datepicker__tab-loop {
-  display: inline-block;
+.col-wrp .react-datepicker-wrapper:nth-of-type(2) {
+  margin-left: -59px;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker__input-container input[type="text"] {
+  width: 50%;
+}
+.react-datepicker__input-container::before {
+  /* 달력 아이콘 추가 */
+  content: url("css/images/common/bg_calendar.png");
+  background-color: #fff;
+  border-radius: 0.313rem;
+  margin-left: -60px;
+}
+
+.col-wrp {
+  display: flex;
+}
+
+.react-datepicker-ignore-onclickoutside {
 }
