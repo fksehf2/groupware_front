@@ -13,7 +13,7 @@ const EqpList = () => {
   const [loading, IsLoading] = useState(false);
 
   const fetchList = async () => {
-    IsLoading(true);                                                                                                      ㅡ ,                      
+    IsLoading(true);
     try {
       const url = new URL("http://localhost:8080/erpList");
 
