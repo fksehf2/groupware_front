@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 
 const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
   console.log(eqpSno);
@@ -10,6 +11,9 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
 
   //data
   const [dtlData, setDtlData] = useState([]);
+  const [code, setCode] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const fetchList = async () => {
     try {
@@ -36,6 +40,24 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
 
   useEffect(() => {
     fetchList();
+  }, []);
+
+  //셀렉트 목록
+  useEffect(() => {
+    const codeFetch = async () => {
+      const cdId = "C05";
+      try {
+        const response = await fetch(`http://localhost:8080/erpCode/${cdId}`);
+        if (!response.ok) {
+          throw new Error("fail....");
+        }
+        const codeData = await response.json();
+        console.log(codeData);
+        setCode([{ id: "all", cdNm: "전체" }, ...codeData]);
+      } catch (error) {}
+    };
+
+    codeFetch();
   }, []);
 
   return (
@@ -80,9 +102,12 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   data-requireNm="장비도입구분"
                                   data-maxLength="6"
                                   title="장비도입구분"
-                                  maxlength="3"
+                                  maxLength="3"
+                                  defaultValue={item.eqpBuyDiv}
                                 >
-                                  <option value="001">구입</option>
+                                  <option value="">선택</option>
+                                  <option value="C04001">구입</option>
+                                  <option value="C04002">임대</option>
                                 </select>
                               </td>
                               <th scope="row">
@@ -93,8 +118,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   id="eqpNm"
                                   name="eqpNm"
                                   type="text"
-                                  value={item.eqpNm}
-                                  maxlength="100"
+                                  defaultValue={item.eqpNm}
+                                  maxLength="100"
                                   className="inpw40"
                                   data-requireNm="장비명"
                                   data-maxLength="200"
@@ -113,8 +138,15 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   data-requireNm="장비유형"
                                   data-maxLength="6"
                                   title="장비유형"
-                                  maxlength="3"
-                                ></select>
+                                  maxLength="3"
+                                  defaultValue={item.eqpTyp}
+                                >
+                                  {code.map((item) => (
+                                    <option key={item.cd} value={item.cd}>
+                                      {item.cdNm}
+                                    </option>
+                                  ))}
+                                </select>
                               </td>
                               <th scope="row">시리얼번호</th>
                               <td>
@@ -122,8 +154,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   id="srNo"
                                   name="srNo"
                                   type="text"
-                                  value={item.srNo}
-                                  maxlength="25"
+                                  defaultValue={item.srNo}
+                                  maxLength="25"
                                   data-requireNm="시리얼번호"
                                   data-maxLength="50"
                                   title="시리얼번호"
@@ -134,39 +166,25 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                             <tr>
                               <th scope="row">도입일자</th>
                               <td>
-                                <input
-                                  id="purcDt"
-                                  name="purcDt"
-                                  type="text"
-                                  value=""
-                                  maxlength="4"
-                                  data-requireNm="도입일자"
-                                  data-maxLength="8"
-                                  title="도입일자"
-                                />
+                                <label>
+                                  <DatePicker value={item.purcDt} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                                </label>
                               </td>
                               <th scope="row">만료일자</th>
                               <td>
-                                <input
-                                  id="exprDt"
-                                  name="exprDt"
-                                  type="text"
-                                  value=""
-                                  maxlength="4"
-                                  data-requireNm="만료일자"
-                                  data-maxLength="8"
-                                  title="만료일자"
-                                />
+                                <label>
+                                  <DatePicker value={item.exprDt} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                                </label>
                               </td>
                             </tr>
                             <tr>
                               <th scope="row">보증기간</th>
                               <td>
-                                <input id="guarTrm" name="guarTrm" type="text" value="" maxlength="4" className="inpw40" />
+                                <input id="guarTrm" name="guarTrm" type="text" defaultValue={item.guarTrm} maxLength="4" className="inpw40" />
                               </td>
                               <th scope="row">제조사</th>
                               <td>
-                                <input id="mnftCo" name="mnftCo" type="text" value={item.mnftCo} maxlength="100" className="inpw40" /> &nbsp;
+                                <input id="mnftCo" name="mnftCo" type="text" defaultValue={item.mnftCo} maxLength="100" className="inpw40" /> &nbsp;
                               </td>
                             </tr>
                             <tr>
@@ -174,12 +192,12 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                 모델명<span className="fontred">*</span>
                               </th>
                               <td>
-                                {/* <input id="mdlNm" name="mdlNm" type="text" value=""  maxlength="100" data-requireNm="모델명" data-maxLength="200" title="모델명" className="inpw40"/>  */}
-                                <input id="mdlNm" name="mdlNm" type="text" value={item.mdlNm} maxlength="100" title="모델명" className="inpw40" />
+                                {/* <input id="mdlNm" name="mdlNm" type="text" value=""  maxLength="100" data-requireNm="모델명" data-maxLength="200" title="모델명" className="inpw40"/>  */}
+                                <input id="mdlNm" name="mdlNm" type="text" defaultValue={item.mdlNm} maxLength="100" title="모델명" className="inpw40" />
                               </td>
                               <th scope="row">제조국가</th>
                               <td>
-                                <input id="mnftNat" name="mnftNat" type="text" value={item.mnftNat} maxlength="100" className="inpw40" /> &nbsp;
+                                <input id="mnftNat" name="mnftNat" type="text" defaultValue={item.mnftNat} maxLength="100" className="inpw40" /> &nbsp;
                               </td>
                             </tr>
                             <tr>
@@ -189,25 +207,23 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   id="deprPrid"
                                   name="deprPrid"
                                   type="text"
-                                  value=""
-                                  maxlength="10"
+                                  defaultValue={item.deprPrid}
+                                  maxLength="10"
                                   className="inpw40"
-                                  data-requireNm="내용년수"
-                                  data-maxLength="20"
                                   title="내용년수"
                                 />
                               </td>
                               <th scope="row">단가</th>
                               <td>
-                                <input id="unitAmt" name="unitAmt" type="text" value={item.unitAmt} maxlength="12,0" className="inpw40" />
+                                <input id="unitAmt" name="unitAmt" type="text" defaultValue={item.unitAmt} maxLength="12,0" className="inpw40" />
                               </td>
                             </tr>
                             <tr>
                               <th scope="row">
                                 보유장소<span className="fontred">*</span>
                               </th>
-                              <td colspan="3">
-                                <input id="hldPlc" name="hldPlc" type="text" value={item.hldPlc} maxlength="100" className="inpw40" />
+                              <td colSpan="3">
+                                <input id="hldPlc" name="hldPlc" type="text" defaultValue={item.hldPlc} maxLength="100" className="inpw40" />
                               </td>
                             </tr>
                           </>
@@ -250,7 +266,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                         <th scope="row">비고</th>
                         <td>
                           {/* value={item.remarks} */}
-                          <input id="remarks" name="remarks" type="text" maxlength="500" />
+                          <input id="remarks" name="remarks" type="text" maxLength="500" />
                         </td>
                       </tr>
                     </tbody>

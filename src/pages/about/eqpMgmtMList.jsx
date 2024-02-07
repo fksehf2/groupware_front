@@ -63,8 +63,9 @@ const EqpList = () => {
   //셀렉트 목록 (공통코드 조회)
   useEffect(() => {
     const codeFetch = async () => {
+      const cdId = "C05";
       try {
-        const response = await fetch("http://localhost:8080/erpCode");
+        const response = await fetch(`http://localhost:8080/erpCode/${cdId}`);
         if (!response.ok) {
           throw new Error("fail....");
         }

@@ -11,7 +11,7 @@ const Pagination = ({ total, page, setPage, limit, fetchList }) => {
 
   return (
     <div id="page_navi" className="page_wrap">
-      <div id="page_nationpage_navi" class="page_nation">
+      <div id="page_nationpage_navi" className="page_nation">
         {/* <button onClick={() => setPage(page - 1)} disabled={page === 1}>
           &lt;
         </button> */}
