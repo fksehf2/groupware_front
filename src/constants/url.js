@@ -12,6 +12,7 @@ const URL = {
   ABOUT_ORGANIZATION: "/about/organization", // 사이트소개/조직소개
   ABOUT_LOCATION: "/about/location", // 사이트소개/찾아오시는길
   ABOUT_EqpList: "/about/eqpList", // 사이트소개/장비관리
+  ABOUT_EqpUDtl: "/about/epqMgmtUDtl", // 사이트소개/장비관리상세
   ABOUT_FsysLogQList: "/about/fsysLogQList", // 사이트소개/로그
 
   //INTRO

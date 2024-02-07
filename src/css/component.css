@@ -1131,15 +1131,24 @@ select::-ms-expand {
 
 /* 리액트 관련 */
 .react-datepicker-wrapper,
-.react-datepicker__input-container {
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
   /* display: inline;
   vertical-align: top; */
-  /* width: 100% !important; */
-  flex-direction: row-reverse;
+  /* flex-direction: row-reverse; */
+  width: 120px;
+  /* display: flex; */
+}
+.col-wrp .react-datepicker-wrapper:nth-of-type(1) {
+  float: left;
+  width: 50%;
+}
+.col-wrp .react-datepicker-wrapper:nth-of-type(2) {
+  margin-left: 6px;
 }
 
-.col-wrp .react-datepicker-wrapper:nth-of-type(2) {
-  margin-left: -59px;
+.col-wrp > :not(:first-child).react-datepicker-wrapper {
+  margin-left: -139px;
 }
 
 .react-datepicker__triangle {
@@ -1147,19 +1156,18 @@ select::-ms-expand {
 }
 
 .react-datepicker__input-container input[type="text"] {
-  width: 50%;
+  width: 70% !important;
 }
+
 .react-datepicker__input-container::before {
   /* 달력 아이콘 추가 */
   content: url("css/images/common/bg_calendar.png");
   background-color: #fff;
-  border-radius: 0.313rem;
-  margin-left: -60px;
+  /* border-radius: 0.313rem; */
+  margin-left: 3px;
+  cursor: pointer;
 }
 
 .col-wrp {
   display: flex;
-}
-
-.react-datepicker-ignore-onclickoutside {
 }

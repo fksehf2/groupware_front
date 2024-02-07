@@ -2049,3 +2049,15 @@ a.btn_ty3 {
     opacity: 100%;
   }
 }
+
+.td-dtl {
+  /* display: inline-block; */
+  /* padding: 5px 10px; */
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue !important;
+}
+
+/* .td-dtl:hover {
+  background-color: #f0f0f0;
+} */

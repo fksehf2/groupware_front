@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 
 const FsysLogQ = () => {
-  const day = 13;
+  //date set
+  const day = 8;
   const [startDate, setStartDate] = useState(new Date().setDate(-day));
   const [endDate, setEndDate] = useState(new Date());
-  const [picker, setPicker] = useState(false);
-
-  useEffect(() => {
-    console.log(picker);
-  }, [picker]);
 
   return (
     <div id="con_wrap">
@@ -69,17 +65,12 @@ const FsysLogQ = () => {
                       </th>
                       <th scope="col">
                         <div className="col-wrp">
-                          {/* <input className="inpw30" type="text" name="searchRegFromDt" id="searchRegFromDt" />
-                          <img
-                            className="ui-datepicker-trigger"
-                            src="/images/main/bg_calendar.png"
-                            alt="..."
-                            title="..."
-                            style={{ cursor: "pointer", float: "left" }}
-                            onClick={() => setPicker(!picker)}
-                          /> */}
-                          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
-                          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                          <label>
+                            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                          </label>
+                          <label>
+                            <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                          </label>
                         </div>
                       </th>
                       <th scope="col" className="hcolor">
