@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import EqpDtlInfo from "./eqpDtlInfo";
 
 const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
   console.log(eqpSno);
@@ -12,8 +13,9 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
   //data
   const [dtlData, setDtlData] = useState([]);
   const [code, setCode] = useState([]);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [eqpTyp, setEqpTyp] = useState("");
 
   const fetchList = async () => {
     try {
@@ -33,6 +35,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
       const reqData = await response.json();
       console.log(reqData);
       setDtlData(reqData);
+      setEqpTyp(reqData[0].eqpTyp);
     } catch (error) {
       console.log(error);
     }
@@ -167,13 +170,25 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               <th scope="row">도입일자</th>
                               <td>
                                 <label>
-                                  <DatePicker value={item.purcDt} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                                  <DatePicker
+                                    // value={item.purcDt}
+                                    selectsStart="true"
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    dateFormat="yyyy/MM/dd"
+                                  />
                                 </label>
                               </td>
                               <th scope="row">만료일자</th>
                               <td>
                                 <label>
-                                  <DatePicker value={item.exprDt} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                                  <DatePicker
+                                    startDate={item.exprDt}
+                                    selectsStart="true"
+                                    selected={endDate}
+                                    onChange={(date) => setEndDate(date)}
+                                    dateFormat="yyyy/MM/dd"
+                                  />
                                 </label>
                               </td>
                             </tr>
@@ -230,29 +245,9 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                         </tbody>
                       );
                     })}
-
-                    {/* </tbody> */}
                   </table>
                   <br />
-                  <table className="iptTblX">
-                    <colgroup>
-                      <col width="15%" />
-                      <col width="35%" />
-                      <col width="15%" />
-                      <col width="35%" />
-                    </colgroup>
-                    <tbody id="devEqp"></tbody>
-                  </table>
-
-                  <table className="iptTblX">
-                    <colgroup>
-                      <col width="15%" />
-                      <col width="35%" />
-                      <col width="15%" />
-                      <col width="35%" />
-                    </colgroup>
-                    <tbody id="moniEqp"></tbody>
-                  </table>
+                  {<EqpDtlInfo eqpTyp={eqpTyp} />}
 
                   <br />
 
