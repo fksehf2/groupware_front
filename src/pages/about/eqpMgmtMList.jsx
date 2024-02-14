@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import $ from "jquery";
 
@@ -16,8 +16,8 @@ const EqpList = () => {
   //paging
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const offset = (page - 1) * limit;
+  const [perPageNum, setPerPageNum] = useState(10);
+  const offset = (page - 1) * perPageNum;
 
   //dtl
   const [openDtl, setOpenDtl] = useState(false);
@@ -27,16 +27,29 @@ const EqpList = () => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
+  const searchForm = useRef(null);
+
   const fetchList = async () => {
     IsLoading(true);
     try {
       const url = new URL("http://localhost:8080/erpList");
 
       const params = new URLSearchParams();
-      params.append("offset", offset);
-      params.append("limit", limit);
+      // params.append("offset", offset);
+      // params.append("limit", limit);
 
-      url.search = params.toString();
+      const formData = new FormData(searchForm.current);
+      for (const keyValue of formData) console.log(keyValue);
+
+      if (formData) {
+        for (const pair of formData.entries()) {
+          const [key, value] = pair;
+          params.append(key, value);
+        }
+        params.append("offset", offset);
+        params.append("perPageNum", perPageNum);
+      }
+      url.search = params;
 
       const response = await fetch(url);
       IsLoading(false);
@@ -71,7 +84,7 @@ const EqpList = () => {
         }
         const codeData = await response.json();
         console.log(codeData);
-        setCode([{ id: "all", cdNm: "전체" }, ...codeData]);
+        setCode([{ id: "all", cdNm: "전체", cd: "" }, ...codeData]);
       } catch (error) {}
     };
 
@@ -84,6 +97,19 @@ const EqpList = () => {
 
     console.log("click " + item);
   }
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      fetchList();
+    }
+  };
+
+  const handleSubmit = (event) => {
+    // console.log(event);
+    // event.preventDefault();
+    const formData = new FormData(searchForm.current);
+    for (const keyValue of formData) console.log(keyValue);
+  };
 
   $(document).ready(function () {
     fn_dispCont();
@@ -112,8 +138,8 @@ const EqpList = () => {
 
               <div className="sub">
                 {/* <!--------------검색------------------> */}
-                <form id="searchForm" name="searchForm">
-                  <input type="hidden" className="" id="page" name="page" defaultValue="1" />
+                <form ref={searchForm} name="searchForm" onSubmit={handleSubmit}>
+                  {/* <input type="hidden" className="" id="page" name="page" defaultValue="1" /> */}
                   <div className="t_head">
                     <input type="hidden" id="boardKind" className="b_put" name="boardKind" defaultValue="C23001" />
                     <input type="hidden" id="userGb" name="userGb" defaultValue="C00000" />
@@ -132,13 +158,13 @@ const EqpList = () => {
                             장비번호
                           </th>
                           <td scope="col">
-                            <input className="b_put" type="text" name="schEqpSno" id="schEqpSno" style={{ width: "300px" }} maxLength="10" />
+                            <input className="b_put" type="text" name="schEqpSno" onKeyDown={handleKeyDown} style={{ width: "300px" }} maxLength="10" />
                           </td>
                           <th scope="col" className="hcolor">
                             장비명
                           </th>
                           <td scope="col">
-                            <input className="b_put" type="text" name="schEqpNm" id="schEqpNm" style={{ width: "300px" }} maxLength="100" />
+                            <input className="b_put" type="text" name="schEqpNm" onKeyDown={handleKeyDown} style={{ width: "300px" }} maxLength="100" />
                           </td>
                         </tr>
                         <tr>
@@ -147,9 +173,9 @@ const EqpList = () => {
                           </th>
                           <td scope="col">
                             {/* onChange="fn_searchList(1)" */}
-                            <select className="" id="schEqpTyp" name="schEqpTyp" style={{ width: "80px" }}>
+                            <select className="" name="schEqpTyp" style={{ width: "80px" }} onChange={fetchList}>
                               {code.map((item, i) => (
-                                <option key={item[i]} value={item.cdNm}>
+                                <option key={item[i]} value={item.cd}>
                                   {item.cdNm}
                                 </option>
                               ))}
@@ -161,10 +187,10 @@ const EqpList = () => {
                           <td scope="col">
                             <div className="col-wrp">
                               <label>
-                                <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                                <DatePicker name="schStPurcDt" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" />
                               </label>
                               <label>
-                                <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                                <DatePicker name="schEdPurcDt" selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy-MM-dd" />
                               </label>
                             </div>
                           </td>
@@ -272,7 +298,7 @@ const EqpList = () => {
                   </table>
                 </div>
 
-                <Pagination total={total} page={page} setPage={setPage} limit={limit} fetchList={fetchList} />
+                <Pagination total={total} page={page} setPage={setPage} perPageNum={perPageNum} fetchList={fetchList} />
                 {/* <!--------------//목록----------------------> */}
 
                 {/* <!-----------------------페이징-----------------------> */}

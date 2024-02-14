@@ -33,7 +33,7 @@ const EqpDtlInfo = (props) => {
             </tr>
             <tr>
               <th scope="row">그래픽카드</th>
-              <td colspan="3">
+              <td colSpan="3">
                 <input id="graphics" name="graphics" type="text" maxLength="50" />
               </td>
             </tr>

@@ -13,8 +13,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
   //data
   const [dtlData, setDtlData] = useState([]);
   const [code, setCode] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [eqpTyp, setEqpTyp] = useState("");
 
   const fetchList = async () => {
@@ -36,6 +36,9 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
       console.log(reqData);
       setDtlData(reqData);
       setEqpTyp(reqData[0].eqpTyp);
+      // const purcDt = reqData[0].purcDt;
+      // setStartDate(new Date(purcDt));
+      // console.log(startDate);
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +103,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   className=""
                                   id="eqpBuyDiv"
                                   name="eqpBuyDiv"
-                                  onchange=""
+                                  onChange=""
                                   style={{ width: "80px" }}
                                   data-requireNm="장비도입구분"
                                   data-maxLength="6"
@@ -171,7 +174,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               <td>
                                 <label>
                                   <DatePicker
-                                    // value={item.purcDt}
+                                    // startDate={item.purcDt}
+                                    defaultValue={item.purcDt}
                                     selectsStart="true"
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
@@ -183,7 +187,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               <td>
                                 <label>
                                   <DatePicker
-                                    startDate={item.exprDt}
+                                    // startDate={item.exprDt}
+                                    defaultValue={item.exprDt}
                                     selectsStart="true"
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}

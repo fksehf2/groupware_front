@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./css/page.css";
-const Pagination = ({ total, page, setPage, limit, fetchList }) => {
-  const pageNums = Math.ceil(total / limit);
+const Pagination = ({ total, page, setPage, perPageNum, fetchList }) => {
+  const pageNums = Math.ceil(total / perPageNum);
   console.log(pageNums);
 
   useEffect(() => {
-    console.log(page, limit);
-    fetchList(page, limit);
+    console.log(page, perPageNum);
+    fetchList(page, perPageNum);
   }, [page]);
 
   return (
