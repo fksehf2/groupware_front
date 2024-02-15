@@ -36,9 +36,13 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
       console.log(reqData);
       setDtlData(reqData);
       setEqpTyp(reqData[0].eqpTyp);
-      // const purcDt = reqData[0].purcDt;
-      // setStartDate(new Date(purcDt));
-      // console.log(startDate);
+
+      const purcDt = reqData[0].purcDt;
+      const exprDt = reqData[0].exprDt;
+      if (purcDt != "" && exprDt != undefined) {
+        setStartDate(new Date(`${purcDt.substring(0, 4)}-${purcDt.substring(4, 6)}-${purcDt.substring(6, 8)}`));
+        setEndDate(new Date(`${exprDt.substring(0, 4)}-${exprDt.substring(4, 6)}-${exprDt.substring(6, 8)}`));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -58,8 +62,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
           throw new Error("fail....");
         }
         const codeData = await response.json();
-        console.log(codeData);
-        setCode([{ id: "all", cdNm: "전체" }, ...codeData]);
+        // console.log(codeData);
+        setCode([{ id: "all", cdNm: "전체", cd: "" }, ...codeData]);
       } catch (error) {}
     };
 
@@ -174,8 +178,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               <td>
                                 <label>
                                   <DatePicker
-                                    // startDate={item.purcDt}
-                                    defaultValue={item.purcDt}
+                                    startDate={startDate}
+                                    // defaultValue={item.purcDt}
                                     selectsStart="true"
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
@@ -187,8 +191,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               <td>
                                 <label>
                                   <DatePicker
-                                    // startDate={item.exprDt}
-                                    defaultValue={item.exprDt}
+                                    startDate={endDate}
+                                    // defaultValue={item.exprDt}
                                     selectsStart="true"
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}
