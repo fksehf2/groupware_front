@@ -10,38 +10,67 @@ function EgovLeftNavAbout() {
         <h2>사이트 소개</h2>
         <ul className="menu4">
           <li>
-            <NavLink to={URL.ABOUT_SITE} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_SITE}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               소개
             </NavLink>
           </li>
           <li>
-            <NavLink to={URL.ABOUT_HISTORY} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_HISTORY}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               연혁
             </NavLink>
           </li>
           <li>
-            <NavLink to={URL.ABOUT_ORGANIZATION} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_ORGANIZATION}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               조직소개
             </NavLink>
           </li>
           <li>
-            <NavLink to={URL.ABOUT_LOCATION} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_LOCATION}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               찾아오시는 길
             </NavLink>
           </li>
           <li>
-            <NavLink to={URL.ABOUT_EqpList} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_EqpList}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               장비
             </NavLink>
           </li>
           <li>
-            <NavLink to={URL.ABOUT_EqpUDtl} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_EqpUDtl}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               장비상세
             </NavLink>
           </li>
           <li>
-            <NavLink to={URL.ABOUT_FsysLogQList} className={({ isActive }) => (isActive ? "cur" : "")}>
+            <NavLink
+              to={URL.ABOUT_FsysLogQList}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
               로그조회
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={URL.ABOUT_EqpRDtl}
+              className={({ isActive }) => (isActive ? "cur" : "")}
+            >
+              등록화면
             </NavLink>
           </li>
         </ul>

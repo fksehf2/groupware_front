@@ -1,4 +1,29 @@
-const eqpMgmtRDtl = () => {
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import serach from "../../css/images2/ico_search_b.png";
+import EqupQListPop from "../about/EqupQListPop";
+
+const EqpMgmtRDtl = () => {
+  const [eqpType, setEqpTyp] = useState("C05001");
+  const [openPop, setOpenPop] = useState(false);
+  const navigate = useNavigate();
+
+  const regForm = useRef(null);
+
+  const chageEqpType = (e) => {
+    console.log("Selected value:", e);
+    setEqpTyp(e);
+  };
+
+  const regEqpMgmt = () => {
+    const formData = new FormData(regForm.current);
+    for (const keyValue of formData) console.log(keyValue);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setOpenPop(!openPop);
+  };
   return (
     <div id="con_wrap">
       <div className="content">
@@ -8,9 +33,9 @@ const eqpMgmtRDtl = () => {
           <div className="sub_ttl">장비 등록</div>
           {/* <!-----타이틀------> */}
 
-          <div classNameName="sub">
+          <div className="sub">
             {/* <!------------검색-------------------> */}
-            <form name="insForm" id="insForm" method="post">
+            <form name="regForm" id="regForm" method="post" ref={regForm}>
               {/* "<c:out value="${param.menuNo}" />" /> */}
               <input type="hidden" id="menuNo" name="menuNo" value=""></input>
               {/*<c:out value="${param.sysGrp}" /> */}
@@ -36,13 +61,13 @@ const eqpMgmtRDtl = () => {
                           className=""
                           id="eqpBuyDiv"
                           name="eqpBuyDiv"
-                          onchange=""
                           style={{ width: "80px" }}
                           data-maxLength="6"
                           title="장비도입구분"
                           maxLength="3"
                         >
                           <option value="001">구입</option>
+                          <option value="002">임대</option>
                         </select>
                       </td>
                       <th scope="row">
@@ -53,13 +78,21 @@ const eqpMgmtRDtl = () => {
                           id="eqpNm"
                           name="eqpNm"
                           type="text"
-                          value=""
                           maxLength="100"
                           className="inpw40"
                           data-requireNm="장비명"
                           data-maxLength="200"
                           title="장비명"
                         />
+                        <button onClick={handleSubmit}>
+                          <img
+                            src={serach}
+                            width="25px"
+                            height="25px"
+                            alt="Search"
+                          />
+                        </button>
+                        {openPop && <EqupQListPop setOpenPop={setOpenPop} />}
                       </td>
                     </tr>
                     <tr>
@@ -71,13 +104,22 @@ const eqpMgmtRDtl = () => {
                           className=""
                           id="eqpTyp"
                           name="eqpTyp"
-                          onchange="fn_eqpTyp(this);"
+                          onChange={(e) => {
+                            chageEqpType(e.target.value);
+                          }}
                           style={{ width: "80px" }}
                           data-requireNm="장비유형"
                           data-maxLength="6"
                           title="장비유형"
                           maxLength="3"
-                        ></select>
+                        >
+                          <option value="C05001">데스크탑</option>
+                          <option value="C05002">노트북</option>
+                          <option value="C05003">모니터</option>
+                          <option value="C05004">전자기기</option>
+                          <option value="C05005">가구</option>
+                          <option value="C05006">기타</option>
+                        </select>
                       </td>
                       <th scope="row">시리얼번호</th>
                       <td>
@@ -85,7 +127,6 @@ const eqpMgmtRDtl = () => {
                           id="srNo"
                           name="srNo"
                           type="text"
-                          value=""
                           maxLength="25"
                           data-requireNm="시리얼번호"
                           data-maxLength="50"
@@ -97,21 +138,50 @@ const eqpMgmtRDtl = () => {
                     <tr>
                       <th scope="row">도입일자</th>
                       <td>
-                        <input id="purcDt" name="purcDt" type="text" value="" maxLength="4" data-requireNm="도입일자" data-maxLength="8" title="도입일자" />
+                        <input
+                          id="purcDt"
+                          name="purcDt"
+                          type="text"
+                          maxLength="4"
+                          data-requireNm="도입일자"
+                          data-maxLength="8"
+                          title="도입일자"
+                        />
                       </td>
                       <th scope="row">만료일자</th>
                       <td>
-                        <input id="exprDt" name="exprDt" type="text" value="" maxLength="4" data-requireNm="만료일자" data-maxLength="8" title="만료일자" />
+                        <input
+                          id="exprDt"
+                          name="exprDt"
+                          type="text"
+                          maxLength="4"
+                          data-requireNm="만료일자"
+                          data-maxLength="8"
+                          title="만료일자"
+                        />
                       </td>
                     </tr>
                     <tr>
                       <th scope="row">보증기간</th>
                       <td>
-                        <input id="guarTrm" name="guarTrm" type="text" value="" maxLength="4" className="inpw40" />
+                        <input
+                          id="guarTrm"
+                          name="guarTrm"
+                          type="text"
+                          maxLength="4"
+                          className="inpw40"
+                        />
                       </td>
                       <th scope="row">제조사</th>
                       <td>
-                        <input id="mnftCo" name="mnftCo" type="text" value="" maxLength="100" className="inpw40" /> &nbsp;
+                        <input
+                          id="mnftCo"
+                          name="mnftCo"
+                          type="text"
+                          maxLength="100"
+                          className="inpw40"
+                        />{" "}
+                        &nbsp;
                       </td>
                     </tr>
                     <tr>
@@ -120,11 +190,25 @@ const eqpMgmtRDtl = () => {
                       </th>
                       <td>
                         {/* <!-- 				                 	<input id="mdlNm" name="mdlNm" type="text" value=""  maxLength="100" data-requireNm="모델명" data-maxLength="200" title="모델명" className="inpw40"/> --> */}
-                        <input id="mdlNm" name="mdlNm" type="text" value="" maxLength="100" title="모델명" className="inpw40" />
+                        <input
+                          id="mdlNm"
+                          name="mdlNm"
+                          type="text"
+                          maxLength="100"
+                          title="모델명"
+                          className="inpw40"
+                        />
                       </td>
                       <th scope="row">제조국가</th>
                       <td>
-                        <input id="mnftNat" name="mnftNat" type="text" value="" maxLength="100" className="inpw40" /> &nbsp;
+                        <input
+                          id="mnftNat"
+                          name="mnftNat"
+                          type="text"
+                          maxLength="100"
+                          className="inpw40"
+                        />{" "}
+                        &nbsp;
                       </td>
                     </tr>
                     <tr>
@@ -134,7 +218,6 @@ const eqpMgmtRDtl = () => {
                           id="deprPrid"
                           name="deprPrid"
                           type="text"
-                          value=""
                           maxLength="10"
                           className="inpw40"
                           data-requireNm="내용년수"
@@ -144,39 +227,129 @@ const eqpMgmtRDtl = () => {
                       </td>
                       <th scope="row">단가</th>
                       <td>
-                        <input id="unitAmt" name="unitAmt" type="text" value="" maxLength="12,0" className="inpw40" />
+                        <input
+                          id="unitAmt"
+                          name="unitAmt"
+                          type="text"
+                          maxLength="12,0"
+                          className="inpw40"
+                        />
                       </td>
                     </tr>
                     <tr>
                       <th scope="row">
                         보유장소<span className="fontred">*</span>
                       </th>
-                      <td colspan="3">
-                        <input id="hldPlc" name="hldPlc" type="text" value="" maxLength="100" className="inpw40" />
+                      <td colSpan="3">
+                        <input
+                          id="hldPlc"
+                          name="hldPlc"
+                          type="text"
+                          maxLength="100"
+                          className="inpw40"
+                        />
                       </td>
                     </tr>
                   </tbody>
                 </table>
-                <br />
-                <table className="iptTblX">
-                  <colgroup>
-                    <col width="15%" />
-                    <col width="35%" />
-                    <col width="15%" />
-                    <col width="35%" />
-                  </colgroup>
-                  <tbody id="devEqp"></tbody>
-                </table>
 
-                <table className="iptTblX">
-                  <colgroup>
-                    <col width="15%" />
-                    <col width="35%" />
-                    <col width="15%" />
-                    <col width="35%" />
-                  </colgroup>
-                  <tbody id="moniEqp"></tbody>
-                </table>
+                <br />
+                {eqpType === "C05001" ? (
+                  <table className="iptTblX">
+                    <colgroup>
+                      <col width="15%" />
+                      <col width="35%" />
+                      <col width="15%" />
+                      <col width="35%" />
+                    </colgroup>
+                    <tbody id="devEqp">
+                      <tr>
+                        <th scope="row">CPU</th>
+                        <td>
+                          <input
+                            id="cpu"
+                            name="cpu"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                        <th scope="row">메모리</th>
+                        <td>
+                          <input
+                            id="ram"
+                            name="ram"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">HDD용량</th>
+                        <td>
+                          <input
+                            id="hddVol"
+                            name="hddVol"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                        <th scope="row">SDD용량</th>
+                        <td>
+                          <input
+                            id="ssdVol"
+                            name="ssdVol"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">그래픽카드</th>
+                        <td colSpan="3">
+                          <input
+                            id="graphics"
+                            name="graphics"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                ) : eqpType === "C05003" ? (
+                  <table className="iptTblX">
+                    <colgroup>
+                      <col width="15%" />
+                      <col width="35%" />
+                      <col width="15%" />
+                      <col width="35%" />
+                    </colgroup>
+                    <tbody id="moniEqp">
+                      <tr>
+                        <th scope="row">모니터크기</th>
+                        <td>
+                          <input
+                            id="mntrSize"
+                            name="mntrSize"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                        <th scope="row">해상도</th>
+                        <td>
+                          <input
+                            id="mntrRes"
+                            name="mntrRes"
+                            type="text"
+                            maxLength="50"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                ) : (
+                  <></>
+                )}
 
                 <br />
 
@@ -189,7 +362,12 @@ const eqpMgmtRDtl = () => {
                     <tr>
                       <th scope="row">비고</th>
                       <td>
-                        <input id="remarks" name="remarks" type="text" maxLength="500" />
+                        <input
+                          id="remarks"
+                          name="remarks"
+                          type="text"
+                          maxLength="500"
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -199,12 +377,18 @@ const eqpMgmtRDtl = () => {
             <div className="btn_c">
               <ul>
                 <li>
-                  <a href="#" className="RdButton" onclick="fn_insEqpMgmt();return false;" id="btn_insMgmt" name="btn_insMgmt" style={{ display: "none" }}>
+                  <a
+                    href
+                    className="RdButton"
+                    onClick={regEqpMgmt}
+                    id="btn_insMgmt"
+                    name="btn_insMgmt"
+                  >
                     등록
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="myButton" onclick="fn_searchList(1);return false;">
+                  <a href className="myButton" onClick={() => navigate(-1)}>
                     목록
                   </a>
                 </li>
@@ -221,4 +405,4 @@ const eqpMgmtRDtl = () => {
   );
 };
 
-export default eqpMgmtRDtl;
+export default EqpMgmtRDtl;

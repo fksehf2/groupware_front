@@ -14,6 +14,7 @@ const URL = {
   ABOUT_EqpList: "/about/eqpList", // 사이트소개/장비관리
   ABOUT_EqpUDtl: "/about/epqMgmtUDtl", // 사이트소개/장비관리상세
   ABOUT_FsysLogQList: "/about/fsysLogQList", // 사이트소개/로그
+  ABOUT_EqpRDtl: "/about/EqpRDtl", //등록화면
 
   //INTRO
   INTRO: "/intro", //정보마당

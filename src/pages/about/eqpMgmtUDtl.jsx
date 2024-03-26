@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import EqpDtlInfo from "./eqpDtlInfo";
 
@@ -39,9 +39,23 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
 
       const purcDt = reqData[0].purcDt;
       const exprDt = reqData[0].exprDt;
-      if (purcDt != "" && exprDt != undefined) {
-        setStartDate(new Date(`${purcDt.substring(0, 4)}-${purcDt.substring(4, 6)}-${purcDt.substring(6, 8)}`));
-        setEndDate(new Date(`${exprDt.substring(0, 4)}-${exprDt.substring(4, 6)}-${exprDt.substring(6, 8)}`));
+      if (purcDt !== "" && exprDt !== undefined) {
+        setStartDate(
+          new Date(
+            `${purcDt.substring(0, 4)}-${purcDt.substring(
+              4,
+              6
+            )}-${purcDt.substring(6, 8)}`
+          )
+        );
+        setEndDate(
+          new Date(
+            `${exprDt.substring(0, 4)}-${exprDt.substring(
+              4,
+              6
+            )}-${exprDt.substring(6, 8)}`
+          )
+        );
       }
     } catch (error) {
       console.log(error);
@@ -63,13 +77,21 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
         }
         const codeData = await response.json();
         // console.log(codeData);
-        setCode([{ id: "all", cdNm: "전체", cd: "" }, ...codeData]);
+        setCode([{ id: "all", CD_NM: "전체", CD: "" }, ...codeData]);
       } catch (error) {}
     };
 
     codeFetch();
   }, []);
 
+  const insForm = useRef(null);
+
+  const modify = () => {
+    try {
+      const formData = new FormData(insForm.current);
+      for (const keyValue of formData) console.log(keyValue);
+    } catch (error) {}
+  };
   return (
     <>
       <div id="con_wrap">
@@ -82,7 +104,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
 
             <div className="sub">
               {/* <!------------검색-------------------> */}
-              <form name="insForm" id="insForm" method="post">
+              <form name="insForm" ref={insForm} id="insForm" method="post">
                 <div className="t_list">
                   <table className="iptTblX">
                     <caption>등록</caption>
@@ -152,8 +174,8 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   defaultValue={item.eqpTyp}
                                 >
                                   {code.map((item) => (
-                                    <option key={item.cd} value={item.cd}>
-                                      {item.cdNm}
+                                    <option key={item.CD} value={item.CD}>
+                                      {item.CD_NM}
                                     </option>
                                   ))}
                                 </select>
@@ -176,7 +198,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                             <tr>
                               <th scope="row">도입일자</th>
                               <td>
-                                <label>
+                                <label value={item.purcDt}>
                                   <DatePicker
                                     startDate={startDate}
                                     // defaultValue={item.purcDt}
@@ -204,11 +226,26 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                             <tr>
                               <th scope="row">보증기간</th>
                               <td>
-                                <input id="guarTrm" name="guarTrm" type="text" defaultValue={item.guarTrm} maxLength="4" className="inpw40" />
+                                <input
+                                  id="guarTrm"
+                                  name="guarTrm"
+                                  type="text"
+                                  defaultValue={item.guarTrm}
+                                  maxLength="4"
+                                  className="inpw40"
+                                />
                               </td>
                               <th scope="row">제조사</th>
                               <td>
-                                <input id="mnftCo" name="mnftCo" type="text" defaultValue={item.mnftCo} maxLength="100" className="inpw40" /> &nbsp;
+                                <input
+                                  id="mnftCo"
+                                  name="mnftCo"
+                                  type="text"
+                                  defaultValue={item.mnftCo}
+                                  maxLength="100"
+                                  className="inpw40"
+                                />{" "}
+                                &nbsp;
                               </td>
                             </tr>
                             <tr>
@@ -217,11 +254,27 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               </th>
                               <td>
                                 {/* <input id="mdlNm" name="mdlNm" type="text" value=""  maxLength="100" data-requireNm="모델명" data-maxLength="200" title="모델명" className="inpw40"/>  */}
-                                <input id="mdlNm" name="mdlNm" type="text" defaultValue={item.mdlNm} maxLength="100" title="모델명" className="inpw40" />
+                                <input
+                                  id="mdlNm"
+                                  name="mdlNm"
+                                  type="text"
+                                  defaultValue={item.mdlNm}
+                                  maxLength="100"
+                                  title="모델명"
+                                  className="inpw40"
+                                />
                               </td>
                               <th scope="row">제조국가</th>
                               <td>
-                                <input id="mnftNat" name="mnftNat" type="text" defaultValue={item.mnftNat} maxLength="100" className="inpw40" /> &nbsp;
+                                <input
+                                  id="mnftNat"
+                                  name="mnftNat"
+                                  type="text"
+                                  defaultValue={item.mnftNat}
+                                  maxLength="100"
+                                  className="inpw40"
+                                />{" "}
+                                &nbsp;
                               </td>
                             </tr>
                             <tr>
@@ -239,7 +292,14 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                               </td>
                               <th scope="row">단가</th>
                               <td>
-                                <input id="unitAmt" name="unitAmt" type="text" defaultValue={item.unitAmt} maxLength="12,0" className="inpw40" />
+                                <input
+                                  id="unitAmt"
+                                  name="unitAmt"
+                                  type="text"
+                                  defaultValue={item.unitAmt}
+                                  maxLength="12,0"
+                                  className="inpw40"
+                                />
                               </td>
                             </tr>
                             <tr>
@@ -247,7 +307,14 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                 보유장소<span className="fontred">*</span>
                               </th>
                               <td colSpan="3">
-                                <input id="hldPlc" name="hldPlc" type="text" defaultValue={item.hldPlc} maxLength="100" className="inpw40" />
+                                <input
+                                  id="hldPlc"
+                                  name="hldPlc"
+                                  type="text"
+                                  defaultValue={item.hldPlc}
+                                  maxLength="100"
+                                  className="inpw40"
+                                />
                               </td>
                             </tr>
                           </>
@@ -270,7 +337,12 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                         <th scope="row">비고</th>
                         <td>
                           {/* value={item.remarks} */}
-                          <input id="remarks" name="remarks" type="text" maxLength="500" />
+                          <input
+                            id="remarks"
+                            name="remarks"
+                            type="text"
+                            maxLength="500"
+                          />
                         </td>
                       </tr>
                     </tbody>
@@ -280,12 +352,22 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
               <div className="btn_c">
                 <ul>
                   <li>
-                    <button className="RdButton" onClick="fn_updEqpMgmt();return false;" id="btn_updMgmt" name="btn_updMgmt">
+                    <button
+                      className="RdButton"
+                      onClick={modify}
+                      id="btn_updMgmt"
+                      name="btn_updMgmt"
+                    >
                       수정
                     </button>
                   </li>
                   <li>
-                    <button className="RdButton" onClick="fn_delEqpMgmt();return false;" id="btn_delMgmt" name="btn_delMgmt">
+                    <button
+                      className="RdButton"
+                      onClick="fn_delEqpMgmt();return false;"
+                      id="btn_delMgmt"
+                      name="btn_delMgmt"
+                    >
                       삭제
                     </button>
                   </li>

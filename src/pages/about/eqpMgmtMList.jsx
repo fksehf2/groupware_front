@@ -4,6 +4,7 @@ import $ from "jquery";
 
 import Pagination from "Pagination";
 import EqpUDtl from "./eqpMgmtUDtl";
+import { useNavigate } from "react-router-dom";
 
 const EqpList = () => {
   //data
@@ -36,7 +37,7 @@ const EqpList = () => {
 
       const params = new URLSearchParams();
       // params.append("offset", offset);
-      // params.append("limit", limit);
+      // params.append("perPageNum", perPageNum);
 
       const formData = new FormData(searchForm.current);
       for (const keyValue of formData) console.log(keyValue);
@@ -73,7 +74,7 @@ const EqpList = () => {
     fetchList();
   }, []);
 
-  //셀렉트 목록 (공통코드 조회)
+  // 셀렉트 목록 (공통코드 조회)
   useEffect(() => {
     const codeFetch = async () => {
       const cdId = "C05";
@@ -84,7 +85,7 @@ const EqpList = () => {
         }
         const codeData = await response.json();
         console.log(codeData);
-        setCode([{ id: "all", cdNm: "전체", cd: "" }, ...codeData]);
+        setCode([{ id: "all", CD_NM: "전체", CD: "" }, ...codeData]);
       } catch (error) {}
     };
 
@@ -111,6 +112,12 @@ const EqpList = () => {
     for (const keyValue of formData) console.log(keyValue);
   };
 
+  const navigate = useNavigate();
+
+  const regEqp = () => {
+    navigate("/about/EqpRDtl");
+  };
+
   $(document).ready(function () {
     fn_dispCont();
   });
@@ -133,16 +140,33 @@ const EqpList = () => {
             <div>
               <div className="loca">
                 <div className="ttl">장비 관리</div>
-                <div className="loca_list">Home &gt; 장비 지원 관리 &gt;장비 관리</div>
+                <div className="loca_list">
+                  Home &gt; 장비 지원 관리 &gt;장비 관리
+                </div>
               </div>
 
               <div className="sub">
                 {/* <!--------------검색------------------> */}
-                <form ref={searchForm} name="searchForm" onSubmit={handleSubmit}>
+                <form
+                  ref={searchForm}
+                  name="searchForm"
+                  onSubmit={handleSubmit}
+                >
                   {/* <input type="hidden" className="" id="page" name="page" defaultValue="1" /> */}
                   <div className="t_head">
-                    <input type="hidden" id="boardKind" className="b_put" name="boardKind" defaultValue="C23001" />
-                    <input type="hidden" id="userGb" name="userGb" defaultValue="C00000" />
+                    <input
+                      type="hidden"
+                      id="boardKind"
+                      className="b_put"
+                      name="boardKind"
+                      defaultValue="C23001"
+                    />
+                    <input
+                      type="hidden"
+                      id="userGb"
+                      name="userGb"
+                      defaultValue="C00000"
+                    />
                     <table className="tbl_type_hd" border="1" cellSpacing="0">
                       {/* onkeydown="if(gfn_enterChk())fn_searchList(1);" */}
                       <caption>검색</caption>
@@ -158,13 +182,27 @@ const EqpList = () => {
                             장비번호
                           </th>
                           <td scope="col">
-                            <input className="b_put" type="text" name="schEqpSno" onKeyDown={handleKeyDown} style={{ width: "300px" }} maxLength="10" />
+                            <input
+                              className="b_put"
+                              type="text"
+                              name="schEqpSno"
+                              onKeyDown={handleKeyDown}
+                              style={{ width: "300px" }}
+                              maxLength="10"
+                            />
                           </td>
                           <th scope="col" className="hcolor">
                             장비명
                           </th>
                           <td scope="col">
-                            <input className="b_put" type="text" name="schEqpNm" onKeyDown={handleKeyDown} style={{ width: "300px" }} maxLength="100" />
+                            <input
+                              className="b_put"
+                              type="text"
+                              name="schEqpNm"
+                              onKeyDown={handleKeyDown}
+                              style={{ width: "300px" }}
+                              maxLength="100"
+                            />
                           </td>
                         </tr>
                         <tr>
@@ -173,10 +211,15 @@ const EqpList = () => {
                           </th>
                           <td scope="col">
                             {/* onChange="fn_searchList(1)" */}
-                            <select className="" name="schEqpTyp" style={{ width: "80px" }} onChange={fetchList}>
+                            <select
+                              className=""
+                              name="schEqpTyp"
+                              style={{ width: "80px" }}
+                              onChange={fetchList}
+                            >
                               {code.map((item, i) => (
-                                <option key={item[i]} value={item.cd}>
-                                  {item.cdNm}
+                                <option key={item[i]} value={item.CD}>
+                                  {item.CD_NM}
                                 </option>
                               ))}
                             </select>
@@ -187,10 +230,20 @@ const EqpList = () => {
                           <td scope="col">
                             <div className="col-wrp">
                               <label>
-                                <DatePicker name="schStPurcDt" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" />
+                                <DatePicker
+                                  name="schStPurcDt"
+                                  selected={startDate}
+                                  onChange={(date) => setStartDate(date)}
+                                  dateFormat="yyyy-MM-dd"
+                                />
                               </label>
                               <label>
-                                <DatePicker name="schEdPurcDt" selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy-MM-dd" />
+                                <DatePicker
+                                  name="schEdPurcDt"
+                                  selected={endDate}
+                                  onChange={(date) => setEndDate(date)}
+                                  dateFormat="yyyy-MM-dd"
+                                />
                               </label>
                             </div>
                           </td>
@@ -202,34 +255,57 @@ const EqpList = () => {
                     <ul>
                       {/* <c:if test="${loginVO.userGb == 'C01999'}"> */}
                       <li>
-                        <div id="btn_findExcel" name="btn_findExcel" style={{ display: "none" }}>
+                        <div
+                          id="btn_findExcel"
+                          name="btn_findExcel"
+                          style={{ display: "none" }}
+                        >
                           <input name="excelFile" id="excelFile" type="file" />
                         </div>
                       </li>
                       <li>
                         {/* onClick="fn_updExcEqpMgmtMList();return false;" */}
                         {/* href="javascript:void(0);" */}
-                        <a className="myButton" id="btn_excelUpload" name="btn_excelUpload" style={{ display: "none" }}>
+                        <a
+                          href
+                          className="myButton"
+                          id="btn_excelUpload"
+                          name="btn_excelUpload"
+                          style={{ display: "none" }}
+                        >
                           엑셀업로드
                         </a>
                       </li>
                       <li>
                         {/* href="<c:url value='/resources/sample/장비엑셀업로드.xls'/>" */}
-                        <a download className="myButton" id="btn_excelDown" name="btn_excelDown" style={{ display: "none" }}>
+                        <a
+                          href
+                          download
+                          className="myButton"
+                          id="btn_excelDown"
+                          name="btn_excelDown"
+                          style={{ display: "none" }}
+                        >
                           엑셀양식다운로드
                         </a>
                       </li>
                       {/* </c:if> */}
                       <li>
                         {/* onClick="fn_insEqpMgmt(); return false;" */}
-                        <a href="javascript:void(0);" className="RdButton" id="btn_insMgmt" name="btn_insMgmt">
+                        <a
+                          href
+                          onClick={regEqp}
+                          className="RdButton"
+                          id="btn_insMgmt"
+                          name="btn_insMgmt"
+                        >
                           등록
                         </a>
                       </li>
                       <li>
                         {/* onClick="fn_searchList(1); return false;" */}
                         {/* href="javascript:void(0);"  */}
-                        <a className="gyButton" onClick={fetchList}>
+                        <a href className="gyButton" onClick={fetchList}>
                           조회
                         </a>
                       </li>
@@ -249,8 +325,21 @@ const EqpList = () => {
                 </div>
 
                 {/* <!--------------목록----------------------> */}
-                <div className="t_list" style={{ overflowY: "auto", overflowX: "hidden", width: "100%", height: "450px" }}>
-                  <table id="listTab" className="tbl_type" border="1" cellSpacing="0">
+                <div
+                  className="t_list"
+                  style={{
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                    width: "100%",
+                    height: "450px",
+                  }}
+                >
+                  <table
+                    id="listTab"
+                    className="tbl_type"
+                    border="1"
+                    cellSpacing="0"
+                  >
                     <caption>공지사항관리</caption>
                     <colgroup>
                       <col width="16%" />
@@ -275,15 +364,28 @@ const EqpList = () => {
                       </tr>
                     </thead>
                     {loading && (
-                      <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
-                        <img src="/images/main/loading_icon.gif" />
+                      <div
+                        style={{
+                          position: "fixed",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                        }}
+                      >
+                        <img
+                          src="/images/main/loading_icon.gif"
+                          alt="loading"
+                        />
                       </div>
                     )}
                     {data.map((item, i) => {
                       return (
                         <tbody>
                           <td>{item.eqpSno}</td>
-                          <td className="td-dtl" onClick={() => getDetail(item.eqpSno)}>
+                          <td
+                            className="td-dtl"
+                            onClick={() => getDetail(item.eqpSno)}
+                          >
                             {item.eqpNm}
                           </td>
                           <td>{item.eqpTypNm}</td>
@@ -298,7 +400,13 @@ const EqpList = () => {
                   </table>
                 </div>
 
-                <Pagination total={total} page={page} setPage={setPage} perPageNum={perPageNum} fetchList={fetchList} />
+                <Pagination
+                  total={total}
+                  page={page}
+                  setPage={setPage}
+                  perPageNum={perPageNum}
+                  fetchList={fetchList}
+                />
                 {/* <!--------------//목록----------------------> */}
 
                 {/* <!-----------------------페이징-----------------------> */}

@@ -34,7 +34,12 @@ const EqpDtlInfo = (props) => {
             <tr>
               <th scope="row">그래픽카드</th>
               <td colSpan="3">
-                <input id="graphics" name="graphics" type="text" maxLength="50" />
+                <input
+                  id="graphics"
+                  name="graphics"
+                  type="text"
+                  maxLength="50"
+                />
               </td>
             </tr>
           </tbody>
@@ -51,7 +56,12 @@ const EqpDtlInfo = (props) => {
             <tr>
               <th scope="row">모니터크기</th>
               <td>
-                <input id="mntrSize" name="mntrSize" type="text" maxLength="50" />
+                <input
+                  id="mntrSize"
+                  name="mntrSize"
+                  type="text"
+                  maxLength="50"
+                />
               </td>
               <th scope="row">해상도</th>
               <td>
