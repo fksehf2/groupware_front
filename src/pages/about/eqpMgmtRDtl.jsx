@@ -1,28 +1,116 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import serach from "../../css/images2/ico_search_b.png";
 import EqupQListPop from "../about/EqupQListPop";
 
 const EqpMgmtRDtl = () => {
-  const [eqpType, setEqpTyp] = useState("C05001");
+  // const [eqpType, setEqpTyp] = useState("C05001");
   const [openPop, setOpenPop] = useState(false);
-  const navigate = useNavigate();
+  const [regSucess, setRegSucess] = useState("0");
+  const [selected, setSelected] = useState({
+    EQP_NM: "",
+    EQP_SNO: "",
+    EQP_TYP: "C05001",
+    EQP_TYP_NM: "",
+    MNFT_CO: "",
+    RNUM: "0",
+  });
 
+  const navigate = useNavigate();
+  console.log(selected);
   const regForm = useRef(null);
 
   const chageEqpType = (e) => {
     console.log("Selected value:", e);
-    setEqpTyp(e);
+    setSelected({
+      ...selected,
+      EQP_TYP: e,
+    });
   };
 
-  const regEqpMgmt = () => {
-    const formData = new FormData(regForm.current);
-    for (const keyValue of formData) console.log(keyValue);
+  const regEqpMgmt = async () => {
+    const url = new URL("http://localhost:8080/regeqp");
+
+    const params = new FormData(regForm.current);
+    const sendData = {};
+
+    console.log(params);
+    params.forEach((value, key) => {
+      sendData[key] = value;
+    });
+    console.log(sendData);
+
+    if (sendData["eqpNm"] === null || sendData["eqpNm"] === "") {
+      alert("장비명을 입력해주세요");
+      return;
+    }
+    if (sendData["eqpBuyDiv"] === null || sendData["eqpBuyDiv"] === "") {
+      alert("장비 구매 구분을 입력해주세요");
+      return;
+    }
+    if (sendData["eqpTyp"] === null || sendData["eqpTyp"] === "") {
+      alert("장비 타입을 입력해주세요");
+      return;
+    }
+    if (sendData["mdlNm"] === null || sendData["mdlNm"] === "") {
+      alert("모델명을 입력해주세요");
+      return;
+    }
+    if (sendData["hldPlc"] === null || sendData["hldPlc"] === "") {
+      alert("보유 장소를 입력해주세요");
+      return;
+    }
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendData),
+    })
+      .then((data) => {
+        console.log("Success:", data); // 파싱된 데이터를 출력
+        if (data.ok) {
+          alert("등록되었습니다.");
+          navigate("/about/EqpList");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to submit data");
+      });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenPop(!openPop);
+  };
+
+  const changeEqpNm = (e) => {
+    setSelected({
+      ...selected,
+      EQP_NM: e,
+    });
+    console.log(selected);
+  };
+
+  const chageSrNo = (e) => {
+    setSelected({
+      ...selected,
+      EQP_SNO: e,
+    });
+  };
+
+  const reset = () => {
+    setSelected({
+      ...selected,
+      EQP_NM: "",
+      EQP_SNO: "",
+      EQP_TYP: "C05001",
+      EQP_TYP_NM: "",
+      MNFT_CO: "",
+      RNUM: 0,
+    });
   };
   return (
     <div id="con_wrap">
@@ -31,6 +119,17 @@ const EqpMgmtRDtl = () => {
 
         <div id="contents_info">
           <div className="sub_ttl">장비 등록</div>
+          <button
+            className="myButton"
+            style={{
+              float: "inline-end",
+              display: "inline-block",
+              marginTop: "10px",
+            }}
+            onClick={reset}
+          >
+            초기화
+          </button>
           {/* <!-----타이틀------> */}
 
           <div className="sub">
@@ -80,9 +179,9 @@ const EqpMgmtRDtl = () => {
                           type="text"
                           maxLength="100"
                           className="inpw40"
-                          data-requireNm="장비명"
-                          data-maxLength="200"
                           title="장비명"
+                          value={selected.EQP_NM}
+                          onChange={(e) => changeEqpNm(e.target.value)}
                         />
                         <button onClick={handleSubmit}>
                           <img
@@ -92,7 +191,13 @@ const EqpMgmtRDtl = () => {
                             alt="Search"
                           />
                         </button>
-                        {openPop && <EqupQListPop setOpenPop={setOpenPop} />}
+                        {openPop && (
+                          <EqupQListPop
+                            setOpenPop={setOpenPop}
+                            setSelected={setSelected}
+                            selected={selected}
+                          />
+                        )}
                       </td>
                     </tr>
                     <tr>
@@ -104,12 +209,11 @@ const EqpMgmtRDtl = () => {
                           className=""
                           id="eqpTyp"
                           name="eqpTyp"
+                          value={selected.EQP_TYP}
                           onChange={(e) => {
                             chageEqpType(e.target.value);
                           }}
                           style={{ width: "80px" }}
-                          data-requireNm="장비유형"
-                          data-maxLength="6"
                           title="장비유형"
                           maxLength="3"
                         >
@@ -125,13 +229,13 @@ const EqpMgmtRDtl = () => {
                       <td>
                         <input
                           id="srNo"
-                          name="srNo"
+                          name="EQP_SNO"
                           type="text"
                           maxLength="25"
-                          data-requireNm="시리얼번호"
-                          data-maxLength="50"
                           title="시리얼번호"
                           className="inpw40"
+                          value={selected.EQP_SNO}
+                          onChange={(e) => chageSrNo(e.target.value)}
                         />
                       </td>
                     </tr>
@@ -142,9 +246,7 @@ const EqpMgmtRDtl = () => {
                           id="purcDt"
                           name="purcDt"
                           type="text"
-                          maxLength="4"
-                          data-requireNm="도입일자"
-                          data-maxLength="8"
+                          maxLength="8"
                           title="도입일자"
                         />
                       </td>
@@ -154,9 +256,7 @@ const EqpMgmtRDtl = () => {
                           id="exprDt"
                           name="exprDt"
                           type="text"
-                          maxLength="4"
-                          data-requireNm="만료일자"
-                          data-maxLength="8"
+                          maxLength="8"
                           title="만료일자"
                         />
                       </td>
@@ -180,6 +280,7 @@ const EqpMgmtRDtl = () => {
                           type="text"
                           maxLength="100"
                           className="inpw40"
+                          value={selected.MNFT_CO}
                         />{" "}
                         &nbsp;
                       </td>
@@ -254,7 +355,7 @@ const EqpMgmtRDtl = () => {
                 </table>
 
                 <br />
-                {eqpType === "C05001" ? (
+                {selected.EQP_TYP === "C05001" ? (
                   <table className="iptTblX">
                     <colgroup>
                       <col width="15%" />
@@ -316,7 +417,7 @@ const EqpMgmtRDtl = () => {
                       </tr>
                     </tbody>
                   </table>
-                ) : eqpType === "C05003" ? (
+                ) : selected.EQP_TYP === "C05003" ? (
                   <table className="iptTblX">
                     <colgroup>
                       <col width="15%" />

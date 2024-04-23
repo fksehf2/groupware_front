@@ -166,7 +166,6 @@ const SecondRoutes = () => {
         />
         <Route path={URL.ABOUT_LOCATION} element={<EgovAboutLocation />} />
         <Route path={URL.ABOUT_EqpList} element={<EqpList />} />
-        <Route path={URL.ABOUT_EqpUDtl} element={<EqpUDtl />} />
         <Route path={URL.ABOUT_FsysLogQList} element={<FsysLogQ />} />
         <Route path={URL.ABOUT_EqpRDtl} element={<EqpRDtl />} />
 

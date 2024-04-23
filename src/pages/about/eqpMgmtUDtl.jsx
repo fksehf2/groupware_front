@@ -86,12 +86,83 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
 
   const insForm = useRef(null);
 
-  const modify = () => {
-    try {
-      const formData = new FormData(insForm.current);
-      for (const keyValue of formData) console.log(keyValue);
-    } catch (error) {}
+  const modify = async () => {
+    console.log(eqpSno);
+
+    const url = new URL("http://localhost:8080/modifyeqp");
+
+    const params = new FormData(insForm.current);
+
+    const sendData = {};
+
+    console.log(params);
+    params.forEach((value, key) => {
+      sendData[key] = value;
+      sendData["eqpSno"] = eqpSno;
+    });
+    console.log(sendData);
+
+    if (sendData["eqpNm"] === null || sendData["eqpNm"] === "") {
+      alert("장비명을 입력해주세요");
+      return;
+    }
+    if (sendData["eqpBuyDiv"] === null || sendData["eqpBuyDiv"] === "") {
+      alert("장비 구매 구분을 입력해주세요");
+      return;
+    }
+    if (sendData["eqpTyp"] === null || sendData["eqpTyp"] === "") {
+      alert("장비 타입을 입력해주세요");
+      return;
+    }
+    if (sendData["mdlNm"] === null || sendData["mdlNm"] === "") {
+      alert("모델명을 입력해주세요");
+      return;
+    }
+    if (sendData["hldPlc"] === null || sendData["hldPlc"] === "") {
+      alert("보유 장소를 입력해주세요");
+      return;
+    }
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendData),
+    })
+      .then((data) => {
+        console.log("Success:", data); // 파싱된 데이터를 출력
+        if (data.ok) {
+          alert("수정되었습니다.");
+          setOpenDtl(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to submit data");
+      });
   };
+
+  const delEqpMgmt = async (eqpSno) => {
+    console.log("key " + eqpSno);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/deleqp/${eqpSno}`
+      ).then((data) => {
+        if (data.status === 200) {
+          console.log("data ", data);
+          let result = window.confirm("삭제하시겠습니까?");
+          if (result) {
+            alert("삭제되었습니다");
+            setOpenDtl(false);
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div id="con_wrap">
@@ -129,7 +200,6 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                   className=""
                                   id="eqpBuyDiv"
                                   name="eqpBuyDiv"
-                                  onChange=""
                                   style={{ width: "80px" }}
                                   data-requireNm="장비도입구분"
                                   data-maxLength="6"
@@ -364,7 +434,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                   <li>
                     <button
                       className="RdButton"
-                      onClick="fn_delEqpMgmt();return false;"
+                      onClick={() => delEqpMgmt(eqpSno)}
                       id="btn_delMgmt"
                       name="btn_delMgmt"
                     >

@@ -1,4 +1,57 @@
-const EqupQListPop = ({ setOpenPop }) => {
+import { useEffect, useRef, useState } from "react";
+import Pagination from "Pagination";
+
+const EqupQListPop = ({ setOpenPop, setSelected, selected }) => {
+  const [newEqpNm, setNewEqpNm] = useState(selected.EQP_NM);
+  const [checkedList, setCheckedList] = useState([]);
+  const [data, setData] = useState([]);
+  const [tot, setTot] = useState(0);
+  const [page, setPage] = useState(1);
+  const [perPageNum, setPerPageNum] = useState(10);
+  const offset = (page - 1) * perPageNum;
+  const serachList = useRef(null);
+
+  const searchPop = async () => {
+    // e.preventDefault();
+    const formData = new FormData(serachList.current);
+    for (const keyValue of formData) console.log(keyValue);
+
+    const url = new URL("http://localhost:8080/popupList");
+    const params = new URLSearchParams();
+
+    if (formData) {
+      for (const pair of formData.entries()) {
+        const [key, value] = pair;
+        params.append(key, value);
+      }
+      params.append("offset", offset);
+      params.append("perPageNum", perPageNum);
+    }
+    url.search = params;
+    console.log(params);
+    const response = await fetch(url);
+    // IsLoading(false);
+    if (!response.ok) {
+      throw new Error("fail....");
+    }
+    const reqData = await response.json();
+    setData(reqData);
+    let lastIndex = reqData.length - 1;
+    setTot(lastIndex);
+    console.log(data);
+  };
+
+  const [checked, setChecked] = useState(null);
+  const setRadio = (checked) => {
+    console.log(checked);
+    setCheckedList(checked);
+  };
+
+  const selectedItem = () => {
+    setSelected(checkedList);
+    console.log(selected);
+    setOpenPop(false);
+  };
   return (
     <div>
       <div id="con_wrap_pop">
@@ -10,15 +63,20 @@ const EqupQListPop = ({ setOpenPop }) => {
 
               <div className="sub">
                 {/* <!--------------검색------------------> */}
-                <form name="searchPopForm" id="searchPopForm" method="post">
-                  <input
+                <form
+                  name="searchPopForm"
+                  id="searchPopForm"
+                  method="post"
+                  ref={serachList}
+                >
+                  {/* <input
                     type="hidden"
                     id="srcUseYn"
                     name="srcUseYn"
                     value="Y"
-                  />
+                  /> */}
                   <div className="t_head">
-                    <table className="tbl_type_hd" border="1" onkeydown="">
+                    <table className="tbl_type_hd" border="1">
                       <caption>검색</caption>
                       <colgroup>
                         <col width="20%" />
@@ -29,14 +87,17 @@ const EqupQListPop = ({ setOpenPop }) => {
                       <thead>
                         <tr>
                           <th scope="row" className="hcolor">
-                            장비번호
+                            장비명
                           </th>
                           <td>
                             <input
                               type="text"
                               id="schEqpNmPop"
                               name="schEqpNmPop"
-                              title="장비번호"
+                              onKeyUp={(e) => searchPop(e.target.value)}
+                              title="장비명"
+                              value={newEqpNm}
+                              onChange={(e) => setNewEqpNm(e.target.value)}
                               style={{ width: "220px" }}
                               maxLength="100"
                             />
@@ -44,13 +105,13 @@ const EqupQListPop = ({ setOpenPop }) => {
                           <th scope="row" className="hcolor">
                             장비유형
                           </th>
-                          <td colspan="3">
+                          <td colSpan="3">
                             <select
                               className="selw10"
                               id="schEqpTypPop"
                               name="schEqpTypPop"
                             >
-                              <option>전체</option>
+                              <option value="">전체</option>
                               <option value="C05001">데스크탑</option>
                               <option value="C05002">노트북</option>
                               <option value="C05003">모니터</option>
@@ -66,18 +127,12 @@ const EqupQListPop = ({ setOpenPop }) => {
                   <div className="btn_c">
                     <ul>
                       <li>
-                        <a
-                          href="javascript:fn_selMgmt2();"
-                          className="gyButton"
-                        >
+                        <a href className="gyButton" onClick={selectedItem}>
                           선택확인
                         </a>
                       </li>
                       <li>
-                        <a
-                          href="javascript:fn_searchEqpMListPop(1);"
-                          className="gyButton"
-                        >
+                        <a href onClick={searchPop} className="gyButton">
                           조회
                         </a>
                       </li>
@@ -89,7 +144,10 @@ const EqupQListPop = ({ setOpenPop }) => {
                 {/* <!--------------결과------------------> */}
                 <div className="r_num">
                   | 결과{" "}
-                  <strong id="totalcnt" style={{ color: "#C00" }}></strong>건
+                  <strong id="totalcnt" style={{ color: "#C00" }}>
+                    {tot}
+                  </strong>
+                  건
                 </div>
 
                 {/* <!--------------목록----------------------> */}
@@ -98,27 +156,32 @@ const EqupQListPop = ({ setOpenPop }) => {
                     id="listMgmtFind"
                     className="tbl_type"
                     border="1"
-                    cellspacing="0"
+                    cellSpacing="0"
                   >
                     <caption>목록</caption>
                     <colgroup>
                       <col width="5%" />
                       <col width="5%" />
-                      <col />
-                      <col width="11%" />
-                      <col width="11%" />
+                      <col width="25%" />
+                      {/* <col width="8%" />
+                      <col width="8%" />
                       <col width="11%" />
                       <col width="12%" />
-                      <col width="12%" />
+                      <col width="12%" /> */}
                       {/* <%--                                               <col width="12%"> --%> */}
                     </colgroup>
                     <thead>
                       <tr>
                         <th scope="col">순번</th>
                         <th scope="col">
-                          <input type="checkbox" name="chkAll" id="chkAll" />
+                          <input
+                            type="radio"
+                            name="chkAll"
+                            id="chkAll"
+                            disabled
+                          />
                         </th>
-                        <th scope="col">장비번호</th>
+                        <th scope="col">장비명</th>
                         <th scope="col">장비유형</th>
                         <th scope="col">S/N</th>
                         <th scope="col">모델명</th>
@@ -127,17 +190,51 @@ const EqupQListPop = ({ setOpenPop }) => {
                         {/* <!--                                                  <th scope="col">선택</th> --> */}
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="8">조회 결과가 없습니다.</td>
-                      </tr>
-                    </tbody>
+                    {data && data.length > 0 ? (
+                      <tbody>
+                        {data.slice(0, data.length - 1).map((item, i) => (
+                          <tr key={item.RNUM}>
+                            <td>{item.RNUM}</td>
+                            <th scope="col">
+                              <input
+                                type="radio"
+                                name="chk"
+                                checked={checked}
+                                onChange={(e) => {
+                                  setRadio(item);
+                                }}
+                              />
+                            </th>
+                            <td>{item.EQP_NM}</td>
+                            <td>{item.EQP_TYP_NM}</td>
+                            <td>{item.SR_NO}</td>
+                            <td>{item.MDL_NM}</td>
+                            <td>{item.MNFT_CO}</td>
+                            <td>{item.PURC_DT}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    ) : (
+                      <tbody>
+                        <tr>
+                          <td colSpan="8">조회 결과가 없습니다.</td>
+                        </tr>
+                      </tbody>
+                    )}
                   </table>
                 </div>
                 {/* <!--------------//목록----------------------> */}
 
                 {/* <!-----------------------페이징-----------------------> */}
-                <div id="page_navi" className="page_wrap"></div>
+                <div id="page_navi" className="page_wrap">
+                  <Pagination
+                    total={tot}
+                    page={page}
+                    setPage={setPage}
+                    perPageNum={perPageNum}
+                    fetchList={searchPop}
+                  />
+                </div>
                 {/* <!-----------------------//페이징-----------------------> */}
 
                 {/* <!--                           		<p></p> --> */}
@@ -147,7 +244,7 @@ const EqupQListPop = ({ setOpenPop }) => {
                     {/* <!-- 			                        <li><button className="button60" onClick="javascirpt:fn_selMgmt();return false;">선택적용</button></li> --> */}
                     <li>
                       <a
-                        href="#"
+                        href
                         className="gyButton"
                         onClick={() => setOpenPop(false)}
                       >
