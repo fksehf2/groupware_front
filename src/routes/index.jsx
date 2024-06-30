@@ -24,8 +24,8 @@ import EqpUDtl from "pages/about/eqpMgmtUDtl";
 import EqpRDtl from "pages/about/eqpMgmtRDtl";
 
 //INTRO
-import EgovIntroWork from "pages/intro/EgovIntroWork";
-import EgovIntroService from "pages/intro/EgovIntroService";
+// import EgovIntroWork from "pages/intro/EgovIntroWork";
+// import EgovIntroService from "pages/intro/EgovIntroService";
 
 //SUPPORT
 import EgovSupportDownloadList from "pages/support/download/EgovDownloadList";
@@ -160,19 +160,19 @@ const SecondRoutes = () => {
         <Route path={URL.ABOUT} element={<Navigate to={URL.ABOUT_SITE} />} />
         <Route path={URL.ABOUT_SITE} element={<EgovAboutSite />} />
         <Route path={URL.ABOUT_HISTORY} element={<EgovAboutHistory />} />
-        <Route
+        {/* <Route
           path={URL.ABOUT_ORGANIZATION}
           element={<EgovAboutOrganization />}
-        />
+        /> */}
         <Route path={URL.ABOUT_LOCATION} element={<EgovAboutLocation />} />
         <Route path={URL.ABOUT_EqpList} element={<EqpList />} />
         <Route path={URL.ABOUT_FsysLogQList} element={<FsysLogQ />} />
         <Route path={URL.ABOUT_EqpRDtl} element={<EqpRDtl />} />
 
         {/* INTRO */}
-        <Route path={URL.INTRO} element={<Navigate to={URL.INTRO_WORKS} />} />
+        {/* <Route path={URL.INTRO} element={<Navigate to={URL.INTRO_WORKS} />} />
         <Route path={URL.INTRO_WORKS} element={<EgovIntroWork />} />
-        <Route path={URL.INTRO_SERVICE} element={<EgovIntroService />} />
+        <Route path={URL.INTRO_SERVICE} element={<EgovIntroService />} /> */}
 
         {/* SUPPORT */}
         <Route

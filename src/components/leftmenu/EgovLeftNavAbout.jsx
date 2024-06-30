@@ -17,22 +17,22 @@ function EgovLeftNavAbout() {
               소개
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               to={URL.ABOUT_HISTORY}
               className={({ isActive }) => (isActive ? "cur" : "")}
             >
               연혁
             </NavLink>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <NavLink
               to={URL.ABOUT_ORGANIZATION}
               className={({ isActive }) => (isActive ? "cur" : "")}
             >
               조직소개
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               to={URL.ABOUT_LOCATION}

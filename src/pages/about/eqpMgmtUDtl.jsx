@@ -33,7 +33,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
       }
 
       const reqData = await response.json();
-      console.log(reqData);
+      // console.log(reqData);
       setDtlData(reqData);
       setEqpTyp(reqData[0].eqpTyp);
 
@@ -87,7 +87,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
   const insForm = useRef(null);
 
   const modify = async () => {
-    console.log(eqpSno);
+    // console.log(eqpSno);
 
     const url = new URL("http://localhost:8080/modifyeqp");
 
@@ -95,12 +95,16 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
 
     const sendData = {};
 
+    console.log("---------");
     console.log(params);
+    console.log("---------");
     params.forEach((value, key) => {
       sendData[key] = value;
       sendData["eqpSno"] = eqpSno;
     });
+    console.log("========");
     console.log(sendData);
+    console.log("========");
 
     if (sendData["eqpNm"] === null || sendData["eqpNm"] === "") {
       alert("장비명을 입력해주세요");
@@ -276,6 +280,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
                                     dateFormat="yyyy/MM/dd"
+                                    name="purcDt"
                                   />
                                 </label>
                               </td>
@@ -289,6 +294,7 @@ const EqpUDtl = ({ openDtl, setOpenDtl, eqpSno }) => {
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}
                                     dateFormat="yyyy/MM/dd"
+                                    name="exprDt"
                                   />
                                 </label>
                               </td>

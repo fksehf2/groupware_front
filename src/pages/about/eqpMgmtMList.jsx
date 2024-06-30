@@ -58,6 +58,12 @@ const EqpList = () => {
         throw new Error("fail....");
       }
 
+      console.log("Status:", response.status);
+      console.log("Status Text:", response.statusText);
+      console.log("Headers:", response.headers);
+      console.log("URL:", response.url);
+      console.log("Data:", data);
+      
       const reqData = await response.json();
       setData(reqData);
       let lastIndex = reqData.length - 1;

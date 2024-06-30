@@ -43,7 +43,7 @@ export function requestFetch(url, requestOptions, handler, errorHandler) {
       return response.json();
     })
     .then((resp) => {
-      if (Number(resp.status) === Number(CODE.RCV_ERROR_AUTH)) {
+      if (Number(resp.resultCode) === Number(CODE.RCV_ERROR_AUTH)) {
         alert("Login Alert"); //index.jsx라우터파일에 jwtAuthentication 함수로 공통 인증을 사용하는 코드 추가로 alert 원상복구
         setSessionItem("loginUser", { id: "" });
         window.location.href = URL.LOGIN;
