@@ -18,7 +18,7 @@ export function requestFetch(url, requestOptions, handler, errorHandler) {
   // Login 했을경우 JWT 설정
   const sessionUser = getSessionItem("loginUser");
   const sessionUserId = sessionUser?.id || null;
-  const jToken = getSessionItem("jToken");
+  const jToken = getSessionItem("token");
   if (sessionUserId != null && sessionUserId !== undefined) {
     if (!requestOptions["headers"]) requestOptions["headers"] = {};
     if (!requestOptions["headers"]["Authorization"])

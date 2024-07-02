@@ -73,12 +73,12 @@ function EgovLoginContent(props) {
     };
 
     EgovNet.requestFetch(loginUrl, requestOptions, (resp) => {
-      let resultVO = resp.resultVO;
-      let jToken = resp?.token || null;
+      let resultVO = resp;
+      let jToken = resp.TOKEN || null;
 
       setSessionItem("jToken", jToken);
 
-      if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
+      if (Number(resp.REG_STATUS) === Number(CODE.RCV_SUCCESS)) {
         setLoginVO(resultVO);
         setSessionItem("loginUser", resultVO);
         props.onChangeLogin(resultVO);
