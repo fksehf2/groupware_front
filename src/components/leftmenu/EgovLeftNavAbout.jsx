@@ -41,23 +41,7 @@ function EgovLeftNavAbout() {
               찾아오시는 길
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to={URL.ABOUT_EqpList}
-              className={({ isActive }) => (isActive ? "cur" : "")}
-            >
-              장비
-            </NavLink>
-          </li>
 
-          <li>
-            <NavLink
-              to={URL.ABOUT_FsysLogQList}
-              className={({ isActive }) => (isActive ? "cur" : "")}
-            >
-              로그조회
-            </NavLink>
-          </li>
           {/* <li>
             <NavLink
               to={URL.ABOUT_EqpRDtl}

@@ -857,8 +857,8 @@ select::-ms-expand {
 }
 
 .f_chk {
-  /* display: inline-block; */
-  position: relative;
+  display: inline-block;
+  /* position: relative; */
   min-width: 30px;
   height: 30px;
   border: 0;
@@ -868,9 +868,10 @@ select::-ms-expand {
 }
 .f_chk.on {
   background: url(css/images2/bg_form_chk_on.png) no-repeat;
+  /* background-color: #01b4d0; */
 }
 .f_chk input {
-  position: absolute;
+  /* position: absolute; */
   opacity: 0;
 }
 

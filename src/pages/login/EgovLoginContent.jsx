@@ -134,22 +134,26 @@ function EgovLoginContent(props) {
                   }
                 />
               </span>
-              <div className="chk">
-                <label className="f_chk" htmlFor="saveid" ref={checkRef}>
-                  <input
-                    type="checkbox"
-                    name=""
-                    id="saveid"
-                    onChange={handleSaveIDFlag}
-                    checked={saveIDFlag}
-                  />{" "}
-                  <em>ID저장</em>
-                </label>
-              </div>
-              <button type="button" onClick={submitFormHandler}>
+              <button
+                style={{ marginLeft: "25px" }}
+                type="button"
+                onClick={submitFormHandler}
+              >
                 <span>LOGIN</span>
               </button>
             </fieldset>
+            <div className="chk">
+              <label className="f_chk" htmlFor="saveid" ref={checkRef}>
+                <input
+                  type="checkbox"
+                  name=""
+                  id="saveid"
+                  onChange={handleSaveIDFlag}
+                  checked={saveIDFlag}
+                />{" "}
+                <em>ID기억하기</em>
+              </label>
+            </div>
           </form>
         </div>
 

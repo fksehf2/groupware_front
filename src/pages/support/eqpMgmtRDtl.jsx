@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import serach from "../../css/images2/ico_search_b.png";
-import EqupQListPop from "../about/EqupQListPop";
+import EqupQListPop from "../support/EqupQListPop";
 
 const EqpMgmtRDtl = () => {
   // const [eqpType, setEqpTyp] = useState("C05001");

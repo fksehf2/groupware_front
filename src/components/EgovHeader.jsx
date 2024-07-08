@@ -12,8 +12,8 @@ function EgovHeader() {
   console.log("[Start] EgovHeader ------------------------------");
 
   const sessionUser = getSessionItem("loginUser");
-  const sessionUserId = sessionUser?.id;
-  const sessionUserName = sessionUser?.name;
+  const sessionUserId = sessionUser?.USER_ID;
+  const sessionUserName = sessionUser?.USER_NM;
   const sessionUserSe = sessionUser?.userSe;
 
   const navigate = useNavigate();
@@ -71,12 +71,12 @@ function EgovHeader() {
               alt="표준프레임워크포털 eGovFrame 심플홈페이지"
             />
           </Link>
-          <Link to={URL.MAIN} className="m">
+          {/* <Link to={URL.MAIN} className="m">
             <img
               src="/assets/images/logo_m.png"
               alt="표준프레임워크포털 eGovFrame 심플홈페이지"
             />
-          </Link>
+          </Link> */}
         </h1>
 
         <div className="gnb">
@@ -87,7 +87,7 @@ function EgovHeader() {
                 to={URL.ABOUT}
                 className={({ isActive }) => (isActive ? "cur" : "")}
               >
-                사이트소개
+                About me
               </NavLink>
             </li>
             {/* <li>
@@ -100,7 +100,7 @@ function EgovHeader() {
                 to={URL.SUPPORT}
                 className={({ isActive }) => (isActive ? "cur" : "")}
               >
-                고객지원
+                SKILLS
               </NavLink>
             </li>
             <li>

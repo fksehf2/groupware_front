@@ -17,8 +17,8 @@ export function requestFetch(url, requestOptions, handler, errorHandler) {
 
   // Login 했을경우 JWT 설정
   const sessionUser = getSessionItem("loginUser");
-  const sessionUserId = sessionUser?.id || null;
-  const jToken = getSessionItem("token");
+  const sessionUserId = sessionUser?.USER_ID || null;
+  const jToken = getSessionItem("TOKEN");
   if (sessionUserId != null && sessionUserId !== undefined) {
     if (!requestOptions["headers"]) requestOptions["headers"] = {};
     if (!requestOptions["headers"]["Authorization"])
@@ -45,7 +45,7 @@ export function requestFetch(url, requestOptions, handler, errorHandler) {
     .then((resp) => {
       if (Number(resp.status) === Number(CODE.RCV_ERROR_AUTH)) {
         alert("Login Alert"); //index.jsx라우터파일에 jwtAuthentication 함수로 공통 인증을 사용하는 코드 추가로 alert 원상복구
-        setSessionItem("loginUser", { id: "" });
+        setSessionItem("loginUser", { USER_ID: "" });
         window.location.href = URL.LOGIN;
         return false;
       } else {

@@ -11,10 +11,6 @@ const URL = {
   ABOUT_HISTORY: "/about/history", // 사이트소개/연혁
   ABOUT_ORGANIZATION: "/about/organization", // 사이트소개/조직소개
   ABOUT_LOCATION: "/about/location", // 사이트소개/찾아오시는길
-  ABOUT_EqpList: "/about/eqpList", // 사이트소개/장비관리
-  ABOUT_EqpUDtl: "/about/epqMgmtUDtl", // 사이트소개/장비관리상세
-  ABOUT_FsysLogQList: "/about/fsysLogQList", // 사이트소개/로그
-  ABOUT_EqpRDtl: "/about/EqpRDtl", //등록화면
 
   //INTRO
   INTRO: "/intro", //정보마당
@@ -29,6 +25,10 @@ const URL = {
   SUPPORT_QNA: "/support/qna", // 고객지원/묻고답하기
   SUPPORT_QNA_DETAIL: "/support/qna/detail", // 고객지원/묻고답하기/상세
   SUPPORT_APPLY: "/support/apply", // 고객지원/서비스신청
+  SUPPORT_EqpList: "/support/eqpList", // 사이트소개/장비관리
+  SUPPORT_EqpUDtl: "/support/epqMgmtUDtl", // 사이트소개/장비관리상세
+  SUPPORT_FsysLogQList: "/support/fsysLogQList", // 사이트소개/로그
+  SUPPORT_EqpRDtl: "/support/EqpRDtl", //등록화면
 
   //INFORM
   INFORM: "/inform", // 알림마당
