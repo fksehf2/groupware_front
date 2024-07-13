@@ -70,7 +70,7 @@ const EgovQnaList = () => {
   };
 
   const handleOnKey = (e) => {
-    console.log(e);
+    // console.log(e);
     if (e.keyCode === 13) {
       fetchList();
     }
