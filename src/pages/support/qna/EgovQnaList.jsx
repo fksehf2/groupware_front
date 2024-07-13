@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
-import URL from "constants/url";
+import Pagination from "Pagination";
 
 const EgovQnaList = () => {
   const [data, setData] = useState({});
-
+  const [openDetail, setOpenDetail] = useState(false);
+  const qnaForm = useRef(null);
   //loadingbar
   const [loading, IsLoading] = useState(false);
 
@@ -27,10 +28,20 @@ const EgovQnaList = () => {
       const url = new URL("http://localhost:8080/getQnaList");
 
       const params = new URLSearchParams();
-      params.append("offset", offset);
-      params.append("perPageNum", perPageNum);
 
-      url.search = params.toString();
+      const formData = new FormData(qnaForm.current);
+      console.log(formData);
+
+      if (formData) {
+        for (const param of formData.entries()) {
+          const [key, value] = param;
+          params.append(key, value);
+        }
+        params.append("offset", offset);
+        params.append("perPageNum", perPageNum);
+      }
+
+      url.search = params;
 
       const response = await fetch(url);
 
@@ -39,12 +50,32 @@ const EgovQnaList = () => {
       }
 
       const reqData = await response.json();
+      console.log(reqData);
       setData(reqData);
       // setEqpTyp(reqData[0].eqpTyp);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const getDetail = (e) => {
+    console.log(e);
+    setOpenDetail(true);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(qnaForm.current);
+    for (const key of formData) console.log(key);
+  };
+
+  const handleOnKey = (e) => {
+    console.log(e);
+    if (e.keyCode === 13) {
+      fetchList();
+    }
+  };
+
   return (
     <div className="container">
       <div className="c_wrap">
@@ -79,31 +110,43 @@ const EgovQnaList = () => {
             <h2 className="tit_2">묻고답하기(Q&amp;A)</h2>
 
             {/* <!-- 검색조건 --> */}
-            <div className="condition">
-              <ul>
-                <li className="third_1 L">
-                  <label className="f_select" htmlFor="search_select">
-                    <select
-                      defaultValue={"0"}
-                      name="search_select"
-                      id="search_select"
-                    >
-                      <option value="0">전체</option>
-                      <option value="1">제목</option>
-                      <option value="2">제목/내용</option>
-                      <option value="3">작성자</option>
-                    </select>
-                  </label>
-                </li>
-                <li className="third_2 R">
-                  {/* <!-- 210806 수정 --> */}
-                  <span className="f_search w_500">
-                    <input type="text" name="" placeholder="" />
-                    <button type="button">조회</button>
-                  </span>
-                </li>
-              </ul>
-            </div>
+            <form onSubmit={handleSubmit} ref={qnaForm}>
+              <div className="condition">
+                <ul>
+                  <li className="third_1 L">
+                    <label className="f_select" htmlFor="search_select">
+                      <select
+                        defaultValue={"0"}
+                        name="search_select"
+                        id="search_select"
+                      >
+                        <option value="0">전체</option>
+                        <option value="1">제목</option>
+                        <option value="2">제목/내용</option>
+                        {/* <option value="3">작성자</option> */}
+                      </select>
+                    </label>
+                  </li>
+                  <li className="third_2 R">
+                    <span className="f_search w_500">
+                      <input
+                        type="text"
+                        name="search"
+                        placeholder=""
+                        onKeyUp={handleOnKey}
+                      />
+                      <button
+                        type="button"
+                        onKeyDown={handleOnKey}
+                        onClick={fetchList}
+                      >
+                        조회
+                      </button>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </form>
             {/* <!--// 검색조건 --> */}
 
             {/* <!-- 게시판목록 --> */}
@@ -120,80 +163,60 @@ const EgovQnaList = () => {
                 {/* <p className="no_data" key="0">검색된 결과가 없습니다.</p> */}
 
                 {/* <!-- case : 데이터 있을때 --> */}
-                <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
-                  <div>3</div>
+                {data && data.length > 0 ? (
+                  data.map((a, i) => (
+                    <div className="list_item">
+                      <div>{a.putup_SNO}</div>
+                      <div
+                        className="al"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => getDetail(a.putup_SNO)}
+                      >
+                        {a.title}
+                      </div>
+                      <div>{a.regr_NM}</div>
+                      <div>{a.tot_CNT}</div>
+                      <div>{a.reg_DT}</div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="no_data" key="0">
+                    검색된 결과가 없습니다.
+                  </p>
+                )}
+
+                <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item"></Link>
+                {/* <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
+                  <div>2</div>
                   <div className="al">
-                    공통컴포넌트 중 모니터링 관련 서비스 실행시 오류가
-                    발생합니다(15)
+                    validation 처리 시.패스워드에 대한 메소드를 찾지 못합니다.
                   </div>
                   <div>홍길동</div>
                   <div>3</div>
                   <div>2021-7-24</div>
                 </Link>
-                {/* <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
-                                    <div>2</div>
-                                    <div className="al">validation 처리 시.패스워드에 대한 메소드를 찾지 못합니다.</div>
-                                    <div>홍길동</div>
-                                    <div>3</div>
-                                    <div>2021-7-24</div>
-                                </Link>
-                                <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
-                                    <div>1</div>
-                                    <div className="al">공통컴포넌트 중 모니터링 관련 서비스 실행시 오류가 발생합니다.</div>
-                                    <div>홍길동</div>
-                                    <div>3</div>
-                                    <div>2021-7-24</div>
-                                </Link> */}
+                <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
+                  <div>1</div>
+                  <div className="al">
+                    공통컴포넌트 중 모니터링 관련 서비스 실행시 오류가
+                    발생합니다.
+                  </div>
+                  <div>홍길동</div>
+                  <div>3</div>
+                  <div>2021-7-24</div>
+                </Link> */}
               </div>
             </div>
             {/* <!--// 게시판목록 --> */}
-
-            <div className="board_bot">
-              {/* <!-- Paging --> */}
-              <div className="paging">
-                <ul>
-                  <li className="btn">
-                    <button to="" className="first">
-                      처음
-                    </button>
-                  </li>
-                  <li className="btn">
-                    <button to="" className="prev">
-                      이전
-                    </button>
-                  </li>
-                  <li>
-                    <button to="" className="cur">
-                      1
-                    </button>
-                  </li>
-                  <li>
-                    <button to="">2</button>
-                  </li>
-                  <li>
-                    <button to="">3</button>
-                  </li>
-                  <li>
-                    <button to="">4</button>
-                  </li>
-                  <li>
-                    <button to="">5</button>
-                  </li>
-                  <li className="btn">
-                    <button to="" className="next">
-                      다음
-                    </button>
-                  </li>
-                  <li className="btn">
-                    <button to="" className="last">
-                      마지막
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              {/* <!--/ Paging --> */}
-            </div>
-
+            <br></br>
+            {/* <!!-// paging --> */}
+            <Pagination
+              total={total}
+              page={page}
+              setPage={setPage}
+              perPageNum={perPageNum}
+              fetchList={fetchList}
+            />
             {/* <!--// 본문 --> */}
           </div>
         </div>

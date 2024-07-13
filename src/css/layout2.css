@@ -1897,10 +1897,10 @@ a.btn_ty3 {
   background: #f8f8f8 url(images/page_nnext.png) no-repeat center center;
   margin-right: 0;
 }
-.page_nation a.active {
-  background-color: #42454c;
+.page_nation button.active {
+  background-color: #4b7bed;
   color: #fff;
-  border: 1px solid #42454c;
+  border: 1px solid;
 }
 
 /* ���� */

@@ -63,7 +63,7 @@ const EqpList = () => {
       console.log("Headers:", response.headers);
       console.log("URL:", response.url);
       console.log("Data:", data);
-      
+
       const reqData = await response.json();
       setData(reqData);
       let lastIndex = reqData.length - 1;
@@ -412,6 +412,7 @@ const EqpList = () => {
                   setPage={setPage}
                   perPageNum={perPageNum}
                   fetchList={fetchList}
+                  offset={offset}
                 />
                 {/* <!--------------//목록----------------------> */}
 
