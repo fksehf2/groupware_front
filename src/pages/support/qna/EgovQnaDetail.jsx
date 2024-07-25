@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 
-function EgovQnaDetail({ num }) {
-  console.log("props num   " + num);
+function EgovQnaDetail({ props }) {
+  console.log("props num   " + props);
 
   return (
     <div className="container">
