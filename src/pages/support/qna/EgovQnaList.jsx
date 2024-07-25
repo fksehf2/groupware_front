@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 import Pagination from "Pagination";
+import EgovQnaDetail from "./EgovQnaDetail";
 
 const EgovQnaList = () => {
   const [data, setData] = useState({});
   const [openDetail, setOpenDetail] = useState(false);
+  const [num, setNum] = useState("");
   const qnaForm = useRef(null);
   //loadingbar
   const [loading, IsLoading] = useState(false);
@@ -30,7 +33,7 @@ const EgovQnaList = () => {
       const params = new URLSearchParams();
 
       const formData = new FormData(qnaForm.current);
-      console.log(formData);
+      for (const key of formData) console.log(key);
 
       if (formData) {
         for (const param of formData.entries()) {
@@ -41,6 +44,7 @@ const EgovQnaList = () => {
         params.append("perPageNum", perPageNum);
       }
 
+      console.log("=========== " + params);
       url.search = params;
 
       const response = await fetch(url);
@@ -57,10 +61,13 @@ const EgovQnaList = () => {
       console.log(error);
     }
   };
+  const navigate = useNavigate();
 
-  const getDetail = (e) => {
-    console.log(e);
-    setOpenDetail(true);
+  const getDetail = (num) => {
+    console.log("before send " + num);
+    setNum(num);
+    setOpenDetail(!openDetail);
+    navigate(`/support/qna/detail/${num}`);
   };
 
   const handleSubmit = (e) => {
@@ -161,22 +168,21 @@ const EgovQnaList = () => {
               <div className="result">
                 {/* <!-- case : 데이터 없을때 --> */}
                 {/* <p className="no_data" key="0">검색된 결과가 없습니다.</p> */}
-
                 {/* <!-- case : 데이터 있을때 --> */}
                 {data && data.length > 0 ? (
                   data.map((a, i) => (
                     <div className="list_item">
-                      <div>{a.putup_SNO}</div>
+                      <div>{a.PUTUP_SNO}</div>
                       <div
                         className="al"
                         style={{ cursor: "pointer" }}
-                        onClick={() => getDetail(a.putup_SNO)}
+                        onClick={() => getDetail(a.PUTUP_SNO)}
                       >
-                        {a.title}
+                        {a.TITLE}
                       </div>
-                      <div>{a.regr_NM}</div>
-                      <div>{a.tot_CNT}</div>
-                      <div>{a.reg_DT}</div>
+                      <div>{a.REGR_NM}</div>
+                      <div>{a.SELECT_NUM}</div>
+                      <div>{a.REG_DT.substr(0, 10)}</div>
                     </div>
                   ))
                 ) : (
@@ -184,26 +190,10 @@ const EgovQnaList = () => {
                     검색된 결과가 없습니다.
                   </p>
                 )}
-
                 <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item"></Link>
+                {openDetail ? <EgovQnaDetail num={num} /> : ""}
                 {/* <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
-                  <div>2</div>
-                  <div className="al">
-                    validation 처리 시.패스워드에 대한 메소드를 찾지 못합니다.
-                  </div>
-                  <div>홍길동</div>
-                  <div>3</div>
-                  <div>2021-7-24</div>
-                </Link>
-                <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
-                  <div>1</div>
-                  <div className="al">
-                    공통컴포넌트 중 모니터링 관련 서비스 실행시 오류가
-                    발생합니다.
-                  </div>
-                  <div>홍길동</div>
-                  <div>3</div>
-                  <div>2021-7-24</div>
+
                 </Link> */}
               </div>
             </div>

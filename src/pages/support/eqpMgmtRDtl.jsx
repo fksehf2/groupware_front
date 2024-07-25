@@ -72,7 +72,7 @@ const EqpMgmtRDtl = () => {
         console.log("Success:", data); // 파싱된 데이터를 출력
         if (data.ok) {
           alert("등록되었습니다.");
-          navigate("/about/EqpList");
+          navigate("/support/EqpList");
         }
       })
       .catch((error) => {
