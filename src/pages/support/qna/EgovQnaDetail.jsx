@@ -1,11 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 
-function EgovQnaDetail({ props }) {
-  console.log("props num   " + props);
-
+function EgovQnaDetail() {
+  const { num } = useParams();
+  console.log("props num   " + num);
   return (
     <div className="container">
       <div className="c_wrap">

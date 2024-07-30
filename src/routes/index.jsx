@@ -183,7 +183,7 @@ const SecondRoutes = () => {
         />
         <Route path={URL.SUPPORT_QNA} element={<EgovSupportQnaList />} />
         <Route
-          path={URL.SUPPORT_QNA_DETAIL}
+          path={`${URL.SUPPORT_QNA_DETAIL}/:num`}
           element={<EgovSupportQnaDetail />}
         />
         <Route path={URL.SUPPORT_APPLY} element={<EgovSupportApply />} />

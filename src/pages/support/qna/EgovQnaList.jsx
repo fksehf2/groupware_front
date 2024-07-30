@@ -190,7 +190,7 @@ const EgovQnaList = () => {
                     검색된 결과가 없습니다.
                   </p>
                 )}
-                <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item"></Link>
+                {/* <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item"></Link> */}
                 {openDetail ? <EgovQnaDetail num={num} /> : ""}
                 {/* <Link to={URL.SUPPORT_QNA_DETAIL} className="list_item">
 
