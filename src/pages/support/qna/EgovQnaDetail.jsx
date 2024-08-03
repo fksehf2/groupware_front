@@ -6,12 +6,17 @@ import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 function EgovQnaDetail() {
   const { num } = useParams();
   const [data, setData] = useState([]);
+  const [comment, setComment] = useState([]);
 
   console.log("props num   " + num);
 
   useEffect(() => {
     fetchList();
   }, []);
+
+  useEffect(() => {
+    fetchComent();
+  }, [num]);
 
   const fetchList = async () => {
     // IsLoading(true);
@@ -31,6 +36,30 @@ function EgovQnaDetail() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const fetchComent = async () => {
+    // IsLoading(true);
+    try {
+      const url = new URL(`http://localhost:8080/getComent/${num}`);
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("fail....");
+      }
+
+      const reqData = await response.json();
+      console.log(reqData);
+      setComment(reqData);
+      // setEqpTyp(reqData[0].eqpTyp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const commentDel = (e) => {
+    console.log("댓글 삭제", e);
   };
 
   return (
@@ -122,34 +151,35 @@ function EgovQnaDetail() {
               </>
             ))}
             <div className="qna_a">
-              <span>A</span>
-              <ul>
-                <li>
-                  <span>chanjin님의 답변 2011-08-08 12:33:33</span>
-                  심각: Servlet.service() for servlet action threw exception은
-                  jsp파일을 열어서 보셔야합니다. javax.servlet.ServletException:
-                  Could not get RequestDispatcher for
-                  [/WEB-INF/jsp/egovframework//main/main.jsp]: check that this
-                  file exists within your WAR
-                  <Link to="#" className="btn delete">
-                    Delete
-                  </Link>
-                </li>
-                <li>
-                  <span>sunrise님의 답변 2011-08-07 11:11:11</span>
-                  tomcat서버를 재시동해보세요. 전 그렇게 하니깐 되던데요.
-                  <Link to="#" className="btn delete">
-                    Delete
-                  </Link>
-                </li>
-                <li>
-                  <span>auto님의 답변 2011-08-07 11:11:11</span>
-                  제가 살펴볼께요 메일로 주세요. test@naver.com
-                  <Link to="#" className="btn delete">
-                    Delete
-                  </Link>
-                </li>
-              </ul>
+              {comment.length > 0 ? (
+                comment.map((a, i) => (
+                  <>
+                    <span>A</span>
+                    <ul>
+                      <li>
+                        <span>
+                          {a.user_ID}님의 답변 {a.reg_DT}
+                          <br />
+                          {a.comt_CNTS}
+                        </span>
+                        <button className="btn delete" onClick={commentDel(a)}>
+                          Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </>
+                ))
+              ) : (
+                <></>
+              )}
+
+              {/* <li>
+                <span>sunrise님의 답변 2011-08-07 11:11:11</span>
+                tomcat서버를 재시동해보세요. 전 그렇게 하니깐 되던데요.
+                <Link to="#" className="btn delete">
+                  Delete
+                </Link>
+              </li> */}
             </div>
 
             {/* <!-- 답변달기 --> */}
