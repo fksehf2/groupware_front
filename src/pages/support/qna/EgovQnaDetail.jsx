@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 
 function EgovQnaDetail() {
   const { num } = useParams();
+  const [data, setData] = useState([]);
+
   console.log("props num   " + num);
+
+  useEffect(() => {
+    fetchList();
+  }, []);
+
+  const fetchList = async () => {
+    // IsLoading(true);
+    try {
+      const url = new URL(`http://localhost:8080/getQnaDetail/${num}`);
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("fail....");
+      }
+
+      const reqData = await response.json();
+      console.log(reqData);
+      setData(reqData);
+      // setEqpTyp(reqData[0].eqpTyp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container">
       <div className="c_wrap">
@@ -38,67 +65,62 @@ function EgovQnaDetail() {
             </div>
 
             <h2 className="tit_2">Q&amp;A 상세조회</h2>
-
-            <div className="board_view2">
-              <dl>
-                <dt>제목</dt>
-                <dd>jsp파일을 못찼습니다.</dd>
-              </dl>
-              <dl>
-                <dt>이메일</dt>
-                <dd>abc@nate.com</dd>
-              </dl>
-              <dl>
+            {data.map((a, i) => (
+              <>
+                <div className="board_view2">
+                  <dl>
+                    <dt>제목</dt>
+                    <dd>{a.title}</dd>
+                  </dl>
+                  <dl>
+                    <dt>이메일</dt>
+                    <dd>{a.email}</dd>
+                  </dl>
+                  {/* <dl>
                 <dt>이메일답변여부</dt>
                 <dd>답변요청</dd>
-              </dl>
-              <dl>
-                <dt>등록일자</dt>
-                <dd>2011-08-08 11:11:11</dd>
-              </dl>
-              <dl>
-                <dt>작성자</dt>
-                <dd>박성환</dd>
-              </dl>
-              <dl>
-                <dt>전화</dt>
-                <dd>000-000-0000</dd>
-              </dl>
-              <dl>
-                <dt>작성일</dt>
-                <dd>2011-08-08</dd>
-              </dl>
-              <dl>
-                <dt>조회</dt>
-                <dd>100</dd>
-              </dl>
-              <dl>
-                <dt>처리상태</dt>
-                <dd>접수대기</dd>
-              </dl>
-              <dl>
-                <dt>첨부파일</dt>
-                <dd>
-                  <span className="file_attach">
-                    <Link to="">file_name.hwp</Link> <span>[3626] byte</span>
-                  </span>
-                </dd>
-              </dl>
-            </div>
-            <div className="qna_q">
-              <span>Q</span>
-              안녕하세요 웹호스팅에 올렸더니 jsp파일에서 이런에러로그가
-              남았는데요 jsp파일을 못찾는것같습니다? xml을 수정해야하나요?
-              <br />
-              심각: Servlet.service() for servlet action threw exception
-              <br />
-              javax.servlet.ServletException: Could not get RequestDispatcher
-              for [/WEB-INF/jsp/egovframework//main/main.jsp]: check that this
-              file exists within your WAR
-              <br />
-              at
-              org.springframework.web.servlet.view.InternalResourceView.renderMergedOutputModel(InternalResourceView.java:217)
-            </div>
+              </dl> */}
+                  <dl>
+                    <dt>등록일자</dt>
+                    <dd>{a.reg_DT.substr(0, 10)}</dd>
+                  </dl>
+                  <dl>
+                    <dt>작성자</dt>
+                    <dd>{a.regr_NM}</dd>
+                  </dl>
+                  <dl>
+                    <dt>전화</dt>
+                    <dd>{a.hp_TEL_NO}</dd>
+                  </dl>
+                  {/* <dl>
+                  <dt>작성일</dt>
+                  <dd></dd>
+                </dl> */}
+                  <dl>
+                    <dt>조회</dt>
+                    <dd>{a.select_NUM}</dd>
+                  </dl>
+                  <dl>
+                    <dt>처리상태</dt>
+                    <dd>{a.comfirm_YN}</dd>
+                  </dl>
+                  <dl>
+                    <dt>첨부파일</dt>
+                    <dd>
+                      <span className="file_attach">
+                        <Link to="">file_name.hwp</Link>{" "}
+                        <span>[3626] byte</span>
+                      </span>
+                    </dd>
+                  </dl>
+                </div>
+
+                <div className="qna_q">
+                  <span>Q</span>
+                  {a.cnts}
+                </div>
+              </>
+            ))}
             <div className="qna_a">
               <span>A</span>
               <ul>
