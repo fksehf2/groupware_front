@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import { getLocalItem, setLocalItem, setSessionItem } from "utils/storage";
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 
 function EgovQnaDetail() {
   const { num } = useParams();
+  console.log("props num   " + num);
   const [data, setData] = useState([]);
   const [comment, setComment] = useState([]);
-
-  console.log("props num   " + num);
+  const KEY_ID = "KEY_ID";
 
   useEffect(() => {
     fetchList();
@@ -52,7 +52,6 @@ function EgovQnaDetail() {
       const reqData = await response.json();
       console.log(reqData);
       setComment(reqData);
-      // setEqpTyp(reqData[0].eqpTyp);
     } catch (error) {
       console.log(error);
     }
@@ -60,8 +59,34 @@ function EgovQnaDetail() {
 
   const commentDel = (e) => {
     console.log("댓글 삭제", e);
+    let id = getLocalItem(KEY_ID);
+    console.log("아이디확인" + id);
+    console.log("댓글" + e.regr_ID);
+    if (id !== e.regr_ID) {
+      alert("본인 댓글만 삭제 가능합니다");
+    } else {
+      delComent(e.comt);
+    }
   };
-
+  const delComent = async (comt) => {
+    console.log("key " + comt);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/delComt/${comt}`
+      ).then((data) => {
+        if (data.status === 200) {
+          console.log("data ", data);
+          let result = window.confirm("삭제하시겠습니까?");
+          if (result) {
+            alert("삭제되었습니다");
+            // setOpenDtl(false);
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="container">
       <div className="c_wrap">
@@ -150,25 +175,30 @@ function EgovQnaDetail() {
                 </div>
               </>
             ))}
-            <div className="qna_a">
+            <div>
               {comment.length > 0 ? (
-                comment.map((a, i) => (
-                  <>
-                    <span>A</span>
-                    <ul>
-                      <li>
-                        <span>
-                          {a.user_ID}님의 답변 {a.reg_DT}
-                          <br />
-                          {a.comt_CNTS}
-                        </span>
-                        <button className="btn delete" onClick={commentDel(a)}>
-                          Delete
-                        </button>
-                      </li>
-                    </ul>
-                  </>
-                ))
+                comment
+                  .filter((a) => a.use_YN === "Y")
+                  .map((a, i) => (
+                    <div className="qna_a">
+                      <span key={`span-${i}`}>A</span>
+                      <ul>
+                        <li>
+                          <span>
+                            {a.user_ID}님의 답변 {a.reg_DT}
+                            <br />
+                            {a.comt_CNTS}
+                          </span>
+                          <button
+                            className="btn delete"
+                            onClick={() => commentDel(a)}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  ))
               ) : (
                 <></>
               )}
