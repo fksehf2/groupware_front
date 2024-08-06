@@ -8,7 +8,9 @@ function EgovQnaDetail() {
   console.log("props num   " + num);
   const [data, setData] = useState([]);
   const [comment, setComment] = useState([]);
+  const [comtCnt, setComtCnt] = useState("");
   const KEY_ID = "KEY_ID";
+  let id = getLocalItem(KEY_ID);
 
   useEffect(() => {
     fetchList();
@@ -16,7 +18,7 @@ function EgovQnaDetail() {
 
   useEffect(() => {
     fetchComent();
-  }, [num]);
+  }, [comment]);
 
   const fetchList = async () => {
     // IsLoading(true);
@@ -59,7 +61,6 @@ function EgovQnaDetail() {
 
   const commentDel = (e) => {
     console.log("댓글 삭제", e);
-    let id = getLocalItem(KEY_ID);
     console.log("아이디확인" + id);
     console.log("댓글" + e.regr_ID);
     if (id !== e.regr_ID) {
@@ -86,6 +87,40 @@ function EgovQnaDetail() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const regComnt = async (e) => {
+    console.log("댓글등록", e);
+
+    const newComment = {
+      putup_SNO: num,
+      user_ID: id,
+      REG_DT: new Date().toISOString().replace("T", " ").substring(0, 19),
+      comt_CNTS: e,
+      use_YN: "Y",
+    };
+
+    const url = new URL("http://localhost:8080/regComnt");
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newComment),
+    })
+      .then((data) => {
+        console.log("Success:", data); // 파싱된 데이터를 출력
+        if (data.ok) {
+          alert("등록되었습니다.");
+          // navigate("/support/EqpList");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to submit data");
+      });
+
+    fetchComent();
   };
   return (
     <div className="container">
@@ -219,17 +254,18 @@ function EgovQnaDetail() {
                 <div>
                   <textarea
                     className="f_txtar w_full"
-                    name=""
+                    name="replay_write"
                     id="replay_write"
                     cols="30"
                     rows="10"
+                    onChange={(e) => setComtCnt(e.target.value)}
                   ></textarea>
                 </div>
               </div>
               <div className="right_col">
-                <a href="#!" className="btn ">
+                <button onClick={() => regComnt(comtCnt)} className="btn ">
                   등록
-                </a>
+                </button>
               </div>
             </div>
             {/* <!--// 답변달기 --> */}
