@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getLocalItem, setLocalItem, setSessionItem } from "utils/storage";
+import { getLocalItem } from "utils/storage";
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 
 function EgovQnaDetail() {
@@ -18,7 +18,7 @@ function EgovQnaDetail() {
 
   useEffect(() => {
     fetchComent();
-  }, [comment]);
+  }, []);
 
   const fetchList = async () => {
     // IsLoading(true);
@@ -62,11 +62,12 @@ function EgovQnaDetail() {
   const commentDel = (e) => {
     console.log("댓글 삭제", e);
     console.log("아이디확인" + id);
-    console.log("댓글" + e.regr_ID);
+    console.log("댓글" + e.REGR_ID);
     if (id !== e.regr_ID) {
       alert("본인 댓글만 삭제 가능합니다");
     } else {
       delComent(e.comt);
+      fetchComent();
     }
   };
   const delComent = async (comt) => {
@@ -80,7 +81,6 @@ function EgovQnaDetail() {
           let result = window.confirm("삭제하시겠습니까?");
           if (result) {
             alert("삭제되었습니다");
-            // setOpenDtl(false);
           }
         }
       });
@@ -98,6 +98,7 @@ function EgovQnaDetail() {
       REG_DT: new Date().toISOString().replace("T", " ").substring(0, 19),
       comt_CNTS: e,
       use_YN: "Y",
+      regr_ID: id,
     };
 
     const url = new URL("http://localhost:8080/regComnt");
@@ -119,7 +120,7 @@ function EgovQnaDetail() {
         console.error("Error:", error);
         alert("Failed to submit data");
       });
-
+    setComtCnt("");
     fetchComent();
   };
   return (
@@ -203,7 +204,6 @@ function EgovQnaDetail() {
                     </dd>
                   </dl>
                 </div>
-
                 <div className="qna_q">
                   <span>Q</span>
                   {a.cnts}
@@ -220,7 +220,7 @@ function EgovQnaDetail() {
                       <ul>
                         <li>
                           <span>
-                            {a.user_ID}님의 답변 {a.reg_DT}
+                            {a.regr_ID}님의 답변 {a.reg_DT}
                             <br />
                             {a.comt_CNTS}
                           </span>
@@ -237,16 +237,7 @@ function EgovQnaDetail() {
               ) : (
                 <></>
               )}
-
-              {/* <li>
-                <span>sunrise님의 답변 2011-08-07 11:11:11</span>
-                tomcat서버를 재시동해보세요. 전 그렇게 하니깐 되던데요.
-                <Link to="#" className="btn delete">
-                  Delete
-                </Link>
-              </li> */}
             </div>
-
             {/* <!-- 답변달기 --> */}
             <div className="replay">
               <div className="left_col">
@@ -258,6 +249,7 @@ function EgovQnaDetail() {
                     id="replay_write"
                     cols="30"
                     rows="10"
+                    value={comtCnt}
                     onChange={(e) => setComtCnt(e.target.value)}
                   ></textarea>
                 </div>
