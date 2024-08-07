@@ -585,6 +585,39 @@
   border: 8px solid #c1dfb1;
   background: #cde6bf;
 }
+.major_icon .major_icon_js {
+  margin-top: -10px;
+}
+
+.major_icon:hover {
+  color: rgba(122, 122, 243, 0.764);
+  transform: rotate(-30deg) scale(1.1);
+}
+.major_icon_js:hover {
+  color: rgb(246, 255, 0);
+  transform: rotate(-30deg) scale(1.1);
+}
+
+.job {
+  display: flex;
+  align-items: center;
+}
+.major_description {
+  margin: 0 8px;
+  text-align: center;
+}
+.job_name,
+.job_period {
+  color: var(--color-dark-grey);
+}
+.job_name {
+  font-size: var(--font-small);
+  margin-bottom: auto;
+}
+.job_period {
+  font-size: var(--font-micro);
+}
+
 .SITE_INTRO .ds_1 .t_2 {
   width: 392px;
   height: 151px;

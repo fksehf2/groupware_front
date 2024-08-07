@@ -24,13 +24,13 @@ function EgovFooter() {
           </p>
         </div>
         <div className="right_col">
+          {/* <Link to="">
+            <img className="w" src="/assets/images/banner_w_03.png" alt="" />
+            <img className="m" src="/assets/images/banner_w_03.png" alt="" />
+          </Link> */}
           <Link to="">
             <img className="w" src="/assets/images/banner_w_03.png" alt="" />
-            <img className="m" src="/assets/images/banner_m_03.png" alt="" />
-          </Link>
-          <Link to="">
-            <img className="w" src="/assets/images/banner_w_02.png" alt="" />
-            <img className="m" src="/assets/images/banner_m_02.png" alt="" />
+            <img className="m" src="/assets/images/banner_w_03.png" alt="" />
           </Link>
         </div>
       </div>
