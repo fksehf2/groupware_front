@@ -18,17 +18,17 @@ const URL = {
   INTRO_SERVICE: "/intro/service", // 정보마당/주요서비스소개
 
   //SUPPORT
-  SUPPORT: "/support", // 고객지원
+  SUPPORT: "auth/support", // 고객지원
   SUPPORT_DOWNLOAD: "/support/download", // 고객지원/자료실
-  SUPPORT_DOWNLOAD_DETAIL: "/support/download/detail", // 고객지원/자료실/상세
-  SUPPORT_DOWNLOAD_CREATE: "/support/download/create", // 고객지원/자료실/등록
-  SUPPORT_QNA: "/support/qna", // 고객지원/묻고답하기
-  SUPPORT_QNA_DETAIL: "/support/qna/detail", // 고객지원/묻고답하기/상세
-  SUPPORT_APPLY: "/support/apply", // 고객지원/서비스신청
-  SUPPORT_EqpList: "/support/eqpList", // 사이트소개/장비관리
-  SUPPORT_EqpUDtl: "/support/epqMgmtUDtl", // 사이트소개/장비관리상세
-  SUPPORT_FsysLogQList: "/support/fsysLogQList", // 사이트소개/로그
-  SUPPORT_EqpRDtl: "/support/EqpRDtl", //등록화면
+  SUPPORT_DOWNLOAD_DETAIL: "/auth/support/download/detail", // 고객지원/자료실/상세
+  SUPPORT_DOWNLOAD_CREATE: "/auth/support/download/create", // 고객지원/자료실/등록
+  SUPPORT_QNA: "/auth/support/qna", // 고객지원/묻고답하기
+  SUPPORT_QNA_DETAIL: "/auth/support/qna/detail", // 고객지원/묻고답하기/상세
+  SUPPORT_APPLY: "/auth/support/apply", // 고객지원/서비스신청
+  SUPPORT_EqpList: "/auth/support/eqpList", // 사이트소개/장비관리
+  SUPPORT_EqpUDtl: "/auth/support/epqMgmtUDtl", // 사이트소개/장비관리상세
+  SUPPORT_FsysLogQList: "/auth/support/fsysLogQList", // 사이트소개/로그
+  SUPPORT_EqpRDtl: "/auth/support/EqpRDtl", //등록화면
 
   //INFORM
   INFORM: "/inform", // 알림마당

@@ -23,15 +23,15 @@ import EgovAboutLocation from "pages/about/EgovAboutLocation";
 // import EgovIntroService from "pages/intro/EgovIntroService";
 
 //SUPPORT
-import EgovSupportDownloadList from "pages/support/download/EgovDownloadList";
-import EgovSupportDownloadDetail from "pages/support/download/EgovDownloadDetail";
-import EgovSupportDownloadCreate from "pages/support/download/EgovDownloadCreate";
-import EgovSupportQnaList from "pages/support/qna/EgovQnaList";
-import EgovSupportQnaDetail from "pages/support/qna/EgovQnaDetail";
-import EgovSupportApply from "pages/support/apply/EgovSupportApply";
-import EqpList from "pages/support/eqpMgmtMList";
-import FsysLogQ from "pages/support/fsysLogQList";
-import EqpRDtl from "pages/support/eqpMgmtRDtl";
+import EgovSupportDownloadList from "pages/auth/support/download/EgovDownloadList";
+import EgovSupportDownloadDetail from "pages/auth/support/download/EgovDownloadDetail";
+import EgovSupportDownloadCreate from "pages/auth/support/download/EgovDownloadCreate";
+import EgovSupportQnaList from "pages/auth/support/qna/EgovQnaList";
+import EgovSupportQnaDetail from "pages/auth/support/qna/EgovQnaDetail";
+import EgovSupportApply from "pages/auth/support/apply/EgovSupportApply";
+import EqpList from "pages/auth/support/eqp/eqpMgmtMList";
+import FsysLogQ from "pages/auth/support/eqp/fsysLogQList";
+import EqpRDtl from "pages/auth/support/eqp/eqpMgmtRDtl";
 
 //INFORM
 import EgovDailyList from "pages/inform/daily/EgovDailyList";
@@ -78,7 +78,7 @@ const RootRoutes = () => {
     console.group("jwtAuthentication");
     console.log("[Start] jwtAuthentication ------------------------------");
 
-    const jwtAuthURL = "/jwtAuthAPI";
+    const jwtAuthURL = "/auth/login-jwt";
     let requestOptions = {
       method: "POST",
     };
@@ -104,7 +104,7 @@ const RootRoutes = () => {
       // 컴포넌트 최초 마운트 시 페이지 진입 전(렌더링 전) 실행
       isMounted.current = true; // 이 값으로 true 일 때만 페이지를 렌더링이 되는 변수 사용.
       setMounted(true); // 이 값으로 true 일 때만 페이지를 렌더링이 되는 변수 사용.
-      const regex = /^(\/admin\/)+(.)*$/; //정규표현식 사용: /admin/~ 으로 시작하는 경로 모두 포함
+      const regex = /^(\/auth\/)+(.)*$/; //정규표현식 사용: /admin/~ 으로 시작하는 경로 모두 포함
       if (regex.test(location.pathname)) {
         setMounted(false); // 이 값으로 true 일 때만 페이지를 렌더링이 되는 변수 사용. 기본은 숨기기
         jwtAuthentication(); // 이 함수에서 관리자단 인증여부 확인 후 렌더링 처리

@@ -169,7 +169,7 @@ function EgovAboutSite() {
                     <div className="job_description">
                       <p className="job_name">
                         <br />
-                        si 파견 업무 수행
+                        si 파견 업무 수행(java, springboot, react, git, notion)
                       </p>
                       <p className="job_period">2023.09 ~ 2024.03</p>
                     </div>
@@ -183,7 +183,8 @@ function EgovAboutSite() {
                     <div className="job_description">
                       <p className="job_name">
                         <br />
-                        si 파견 업무 수행
+                        si 파견 업무 수행(java, springboot, vue3,
+                        nexacro,websquare, jquery, git, notion)
                       </p>
                       <p className="job_period">2022.04 ~ 2023.05</p>
                     </div>
@@ -217,11 +218,11 @@ function EgovAboutSite() {
                     </div>
                   </div>
                 </div>
-                <h4 className="t_1">Work Experience</h4>
+                {/* <h4 className="t_1">Work Experience</h4>
 
-                <div>
-                  <div>
-                    <div>
+                <div className="board_view2">
+                  <div className="info2">
+                    <div className="right_col">
                       <dl>
                         <dt>프로젝트명</dt>
                         <dd>CJ프레시웨이 FS 메뉴관리 시스템 개발</dd>
@@ -279,7 +280,7 @@ function EgovAboutSite() {
                       </dl>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <h3 className="tit_5">성장과정</h3>
               <p className="msg_1">
