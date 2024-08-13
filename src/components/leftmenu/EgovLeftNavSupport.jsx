@@ -11,7 +11,7 @@ function EgovLeftNavSupport() {
         <ul className="menu4">
           <li>
             <NavLink
-              to={URL.SUPPORT_DOWNLOAD}
+              to={URL.AUTH.SUPPORT_DOWNLOAD}
               className={({ isActive }) => (isActive ? "cur" : "")}
             >
               자료실
