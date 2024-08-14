@@ -106,6 +106,7 @@ const RootRoutes = () => {
       setMounted(true); // 이 값으로 true 일 때만 페이지를 렌더링이 되는 변수 사용.
       const regex = /^(\/auth\/)+(.)*$/; //정규표현식 사용: /admin/~ 으로 시작하는 경로 모두 포함
       if (regex.test(location.pathname)) {
+        console.log("페이지 체크" + location.pathname);
         setMounted(false); // 이 값으로 true 일 때만 페이지를 렌더링이 되는 변수 사용. 기본은 숨기기
         jwtAuthentication(); // 이 함수에서 관리자단 인증여부 확인 후 렌더링 처리
       }

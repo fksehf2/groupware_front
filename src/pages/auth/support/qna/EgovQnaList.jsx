@@ -67,7 +67,7 @@ const EgovQnaList = () => {
     console.log("before send " + num);
     setNum(num);
     setOpenDetail(!openDetail);
-    navigate(`/support/qna/detail/${num}`);
+    navigate(`/auth/support/qna/detail/${num}`);
   };
 
   const handleSubmit = (e) => {

@@ -18,10 +18,10 @@ const URL = {
   INTRO_SERVICE: "/intro/service", // 정보마당/주요서비스소개
 
   //SUPPORT
-  SUPPORT: "auth/support", // 고객지원
+  SUPPORT: "/support", // 고객지원
   SUPPORT_DOWNLOAD: "/support/download", // 고객지원/자료실
-  SUPPORT_DOWNLOAD_DETAIL: "/auth/support/download/detail", // 고객지원/자료실/상세
-  SUPPORT_DOWNLOAD_CREATE: "/auth/support/download/create", // 고객지원/자료실/등록
+  SUPPORT_DOWNLOAD_DETAIL: "/support/download/detail", // 고객지원/자료실/상세
+  SUPPORT_DOWNLOAD_CREATE: "/support/download/create", // 고객지원/자료실/등록
   SUPPORT_QNA: "/auth/support/qna", // 고객지원/묻고답하기
   SUPPORT_QNA_DETAIL: "/auth/support/qna/detail", // 고객지원/묻고답하기/상세
   SUPPORT_APPLY: "/auth/support/apply", // 고객지원/서비스신청

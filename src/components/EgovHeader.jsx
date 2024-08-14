@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import * as EgovNet from "api/egovFetch";
@@ -18,15 +18,16 @@ function EgovHeader() {
 
   const navigate = useNavigate();
 
-  const logInHandler = () => {
-    // 로그인 정보 없을 시
+  const LogInHandler = () => {
     navigate(URL.LOGIN);
+
     // PC와 Mobile 열린메뉴 닫기
     document.querySelector(".all_menu.WEB").classList.add("closed");
     document.querySelector(".btnAllMenu").classList.remove("active");
     document.querySelector(".btnAllMenu").title = "전체메뉴 닫힘";
     document.querySelector(".all_menu.Mobile").classList.add("closed");
   };
+
   const logOutHandler = () => {
     // 로그인 정보 존재할 때
     const logOutUrl = "/auth/logout";
@@ -138,7 +139,7 @@ function EgovHeader() {
           )}
           {/* 로그인 : 로그인 정보 없을 때 */}
           {!sessionUserId && (
-            <button onClick={logInHandler} className="btn login">
+            <button onClick={LogInHandler} className="btn login">
               로그인
             </button>
           )}
@@ -368,7 +369,7 @@ function EgovHeader() {
 
           {/* 로그인 : 로그인 정보 없을 때 */}
           {!sessionUserId && (
-            <button onClick={logInHandler} className="btn login">
+            <button onClick={LogInHandler} className="btn login">
               로그인
             </button>
           )}
