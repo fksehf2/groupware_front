@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getLocalItem } from "utils/storage";
+import { getSessionItem } from "utils/storage";
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 
 function EgovQnaDetail() {
@@ -9,8 +9,8 @@ function EgovQnaDetail() {
   const [data, setData] = useState([]);
   const [comment, setComment] = useState([]);
   const [comtCnt, setComtCnt] = useState("");
-  const KEY_ID = "KEY_ID";
-  let id = getLocalItem(KEY_ID);
+  const sessionUser = getSessionItem("loginUser");
+  const sessionUserId = sessionUser?.USER_ID || null;
 
   useEffect(() => {
     fetchList();
@@ -61,9 +61,9 @@ function EgovQnaDetail() {
 
   const commentDel = (e) => {
     console.log("댓글 삭제", e);
-    console.log("아이디확인" + id);
+    console.log("아이디확인" + sessionUserId);
     console.log("댓글" + e.REGR_ID);
-    if (id !== e.regr_ID) {
+    if (sessionUserId !== e.regr_ID) {
       alert("본인 댓글만 삭제 가능합니다");
     } else {
       delComent(e.comt);
@@ -81,6 +81,7 @@ function EgovQnaDetail() {
           let result = window.confirm("삭제하시겠습니까?");
           if (result) {
             alert("삭제되었습니다");
+            fetchComent();
           }
         }
       });
@@ -94,11 +95,11 @@ function EgovQnaDetail() {
 
     const newComment = {
       putup_SNO: num,
-      user_ID: id,
+      user_ID: sessionUserId,
       REG_DT: new Date().toISOString().replace("T", " ").substring(0, 19),
       comt_CNTS: e,
       use_YN: "Y",
-      regr_ID: id,
+      regr_ID: sessionUserId,
     };
 
     const url = new URL("http://localhost:8080/regComnt");
@@ -123,6 +124,13 @@ function EgovQnaDetail() {
     setComtCnt("");
     fetchComent();
   };
+
+  const handleOnKey = (e) => {
+    if (e.keyCode === 13) {
+      regComnt();
+    }
+  };
+
   return (
     <div className="container">
       <div className="c_wrap">
@@ -255,7 +263,11 @@ function EgovQnaDetail() {
                 </div>
               </div>
               <div className="right_col">
-                <button onClick={() => regComnt(comtCnt)} className="btn ">
+                <button
+                  onClick={() => regComnt(comtCnt)}
+                  // onKeyDown={handleOnKey}
+                  className="btn"
+                >
                   등록
                 </button>
               </div>

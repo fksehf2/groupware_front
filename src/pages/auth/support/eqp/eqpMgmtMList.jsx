@@ -121,7 +121,7 @@ const EqpList = () => {
   const navigate = useNavigate();
 
   const regEqp = () => {
-    navigate("/support/EqpRDtl");
+    navigate("/auth/support/EqpRDtl");
   };
 
   $(document).ready(function () {

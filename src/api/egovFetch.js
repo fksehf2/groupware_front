@@ -18,12 +18,20 @@ export function requestFetch(url, requestOptions, handler, errorHandler) {
   // Login 했을경우 JWT 설정
   const sessionUser = getSessionItem("loginUser");
   const sessionUserId = sessionUser?.USER_ID || null;
-  const jToken = getSessionItem("TOKEN");
+  const jToken = getSessionItem("jToken");
+  console.log("fetch", sessionUserId);
+
   if (sessionUserId != null && sessionUserId !== undefined) {
-    if (!requestOptions["headers"]) requestOptions["headers"] = {};
-    if (!requestOptions["headers"]["Authorization"])
-      requestOptions["headers"]["Authorization"] = null;
-    requestOptions["headers"]["Authorization"] = jToken;
+    if (!requestOptions["headers"]) {
+      requestOptions["headers"] = {}; // 헤더가 없는 경우 새로 생성
+    }
+
+    // Authorization 헤더를 설정
+    if (jToken) {
+      requestOptions["headers"]["Authorization"] = `${jToken}`;
+    } else {
+      console.error("JWT 토큰이 존재하지 않습니다.");
+    }
   }
 
   //CORS ISSUE 로 인한 조치 - origin 및 credentials 추가
@@ -43,9 +51,10 @@ export function requestFetch(url, requestOptions, handler, errorHandler) {
       return response.json();
     })
     .then((resp) => {
-      console.log(resp);
+      console.log("resp의 값은??", resp);
       if (Number(resp.REG_STATUS) === Number(CODE.RCV_ERROR_AUTH)) {
-        console.log("실패시   " + resp);
+        console.log("실패시   " + resp.REG_STATUS);
+        console.log("실패시   " + jToken);
         alert("로그인이 필요한 페이지입니다"); //index.jsx라우터파일에 jwtAuthentication 함수로 공통 인증을 사용하는 코드 추가로 alert 원상복구
         setSessionItem("loginUser", { USER_ID: "" });
         window.location.href = URL.LOGIN;
