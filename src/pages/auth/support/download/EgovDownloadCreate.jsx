@@ -1,10 +1,54 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CODE from "constants/code";
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
-import URL from "constants/url";
+// import URL from "constants/url";
 
 function EgovDownloadCreate() {
+  const [image, setImage] = useState(null);
+
+  const regForm = useRef(null);
+
+  const navigate = useNavigate();
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const params = new FormData(regForm.current);
+    const fileData = {};
+
+    console.log(params);
+    params.forEach((value, key) => {
+      fileData[key] = value;
+    });
+    console.log(fileData);
+
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append(
+      "fileData",
+      new Blob([JSON.stringify(fileData)], {
+        type: "application/json",
+      })
+    );
+
+    try {
+      const url = "http://localhost:8080/file/upload";
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      }).then((res) => {
+        if (res.status === Number(CODE.RCV_SUCCESS)) {
+          window.alert("등록되었습니다.");
+          navigate("/support/download/");
+        }
+      });
+    } catch (error) {
+      window.alert("Failed to upload image");
+    }
+  };
   return (
     <div className="container">
       <div className="c_wrap">
@@ -39,24 +83,24 @@ function EgovDownloadCreate() {
             <h2 className="tit_2">자료실</h2>
 
             {/* <!-- 상세 --> */}
-            <div className="board_view3">
-              <div className="tit_edit">
-                <dl>
-                  <dt>
-                    <label htmlFor="writer">프로젝트명</label>
-                  </dt>
-                  <dd>
-                    <input
-                      className="f_input2 w_full"
-                      type="text"
-                      name="writer"
-                      id="writer"
-                    />
-                  </dd>
-                </dl>
-              </div>
+            <form onSubmit={handleSubmit} ref={regForm}>
+              <div className="board_view3">
+                <div className="tit_edit">
+                  <dl>
+                    <dt>
+                      <label htmlFor="writer">프로젝트명</label>
+                    </dt>
+                    <dd>
+                      <input
+                        className="f_input2 w_full"
+                        type="text"
+                        name="project"
+                      />
+                    </dd>
+                  </dl>
+                </div>
 
-              {/* <div className="info">
+                {/* <div className="info">
                 <dl>
                   <dt>고객사</dt>
                   <dd>innovate</dd>
@@ -67,66 +111,66 @@ function EgovDownloadCreate() {
                 </dl>
               </div> */}
 
-              <div className="info2">
-                <div className="left_col">
-                  <img src="/assets/images/sample_pds_list.png" alt="" />
-                  <p className="guide">
-                    썸네일 이미지는
-                    <br />
-                    width : 160px, height : 109px
-                    <br />
-                    크기의 이미지를 올려주세요
-                  </p>
-                </div>
-                <div className="right_col">
-                  <dl>
-                    <dt>
-                      <label htmlFor="ip1">기간</label>
-                    </dt>
-                    <dd>
-                      <input
-                        className="f_input2 w_full"
-                        type="text"
-                        name="writer"
-                        id="ip1"
-                      />
-                    </dd>
-                  </dl>
-                  <dl>
-                    <dt>
-                      <label htmlFor="ip2">기술스택</label>
-                    </dt>
-                    <dd>
-                      <input
-                        className="f_input2 w_full"
-                        type="text"
-                        name="writer"
-                        id="ip2"
-                      />
-                    </dd>
-                  </dl>
-                  <dl>
-                    <dt>
-                      <label htmlFor="ip5">담당업무</label>
-                    </dt>
-                    <dd>
-                      <input
-                        className="f_input2 w_full"
-                        type="text"
-                        name="writer"
-                        id="ip5"
-                      />
-                    </dd>
-                  </dl>
-                  <dl>
-                    <dt>
-                      <label htmlFor="ip4">파일정보</label>
-                    </dt>
-                    <dd>
-                      <input className="w_full" type="file" name="" id="ip4" />
-                    </dd>
-                  </dl>
-                  {/* <dl>
+                <div className="info2">
+                  <div className="left_col">
+                    <img src="/assets/images/sample_pds_list.png" alt="" />
+                    <p className="guide">
+                      썸네일 이미지는
+                      <br />
+                      width : 160px, height : 109px
+                      <br />
+                      크기의 이미지를 올려주세요
+                    </p>
+                  </div>
+                  <div className="right_col">
+                    <dl>
+                      <dt>
+                        <label htmlFor="ip1">기간</label>
+                      </dt>
+                      <dd>
+                        <input
+                          className="f_input2 w_full"
+                          type="text"
+                          name="period"
+                          id="ip1"
+                        />
+                      </dd>
+                    </dl>
+                    <dl>
+                      <dt>
+                        <label htmlFor="ip2">기술스택</label>
+                      </dt>
+                      <dd>
+                        <input
+                          className="f_input2 w_full"
+                          type="text"
+                          name="skill"
+                          id="ip2"
+                        />
+                      </dd>
+                    </dl>
+                    <dl>
+                      <dt>
+                        <label htmlFor="ip5">담당업무</label>
+                      </dt>
+                      <dd>
+                        <input
+                          className="f_input2 w_full"
+                          type="text"
+                          name="position"
+                          id="ip5"
+                        />
+                      </dd>
+                    </dl>
+                    <dl>
+                      <dt>
+                        <label htmlFor="ip4">파일정보</label>
+                      </dt>
+                      <dd>
+                        <input type="file" onChange={handleImageChange} />
+                      </dd>
+                    </dl>
+                    {/* <dl>
                     <dt>
                       <label htmlFor="ip6">언어</label>
                     </dt>
@@ -139,38 +183,36 @@ function EgovDownloadCreate() {
                       />
                     </dd>
                   </dl> */}
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* <!--// 상세 --> */}
+              {/* <!--// 상세 --> */}
 
-            <h3 className="tit_5">
-              <label htmlFor="pdsnm">자료설명 입력</label>
-            </h3>
+              <h3 className="tit_5">
+                <label htmlFor="pdsnm">자료설명 입력</label>
+              </h3>
 
-            <div className="pds_desc_edit">
-              <textarea
-                className="f_txtar w_full"
-                name=""
-                id="pdsnm"
-                cols="30"
-                rows="10"
-              ></textarea>
-            </div>
-
-            {/* <!-- 버튼영역 --> */}
-            <div className="board_btn_area">
-              <div className="left_col btn1"></div>
-
-              <div className="right_col btn1">
-                <Link
-                  to={URL.SUPPORT_DOWNLOAD}
-                  className="btn btn_blue_h46 w_100"
-                >
-                  등록
-                </Link>
+              <div className="pds_desc_edit">
+                <textarea
+                  className="f_txtar w_full"
+                  name="description"
+                  id="pdsnm"
+                  cols="30"
+                  rows="10"
+                ></textarea>
               </div>
-            </div>
+
+              {/* <!-- 버튼영역 --> */}
+              <div className="board_btn_area">
+                <div className="left_col btn1"></div>
+
+                <div className="right_col btn1">
+                  <button type="submit" className="btn btn_blue_h46 w_100">
+                    등록
+                  </button>
+                </div>
+              </div>
+            </form>
             {/* <!--// 버튼영역 --> */}
 
             {/* <!--// 본문 --> */}
