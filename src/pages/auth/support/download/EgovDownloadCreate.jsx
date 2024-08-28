@@ -1,17 +1,43 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CODE from "constants/code";
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
 // import URL from "constants/url";
 
 function EgovDownloadCreate() {
-  const [image, setImage] = useState(null);
-
+  // const [postImg, setPostImg] = useState(null);
+  const [previewImg, setPreviewImg] = useState(null);
+  const [postImg, setPostImg] = useState(null);
   const regForm = useRef(null);
 
   const navigate = useNavigate();
+
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    console.log(e.target.files[0]);
+    let file = e.target.files[0];
+    if (file) {
+      // FileReader 객체 생성
+      let fileRead = new FileReader();
+
+      // 파일이 성공적으로 읽히면 실행되는 콜백 함수
+      fileRead.onload = function () {
+        // 여기서 fileRead.result는 Data URL로 변환된 이미지 파일입니다.
+        console.log("File successfully read:", fileRead.result);
+        // 예: 이미지 미리보기를 위해 state에 저장
+        setPreviewImg(fileRead.result);
+      };
+
+      // 파일 읽기 도중 에러가 발생하면 실행되는 콜백 함수
+      fileRead.onerror = function () {
+        console.error("Error reading file:", fileRead.error);
+      };
+
+      // 파일을 Data URL로 읽습니다.
+      fileRead.readAsDataURL(file);
+    } else {
+      console.error("No file selected");
+    }
+    setPostImg(file); //formData전송용 따로 저장
   };
 
   const handleSubmit = async (e) => {
@@ -26,13 +52,15 @@ function EgovDownloadCreate() {
     console.log(fileData);
 
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("image", postImg);
     formData.append(
       "fileData",
       new Blob([JSON.stringify(fileData)], {
         type: "application/json",
       })
     );
+
+    for (const key of formData) console.log(key);
 
     try {
       const url = "http://localhost:8080/file/upload";
@@ -49,6 +77,10 @@ function EgovDownloadCreate() {
       window.alert("Failed to upload image");
     }
   };
+
+  useEffect(() => {
+    console.log("postImg updated:", previewImg);
+  }, [previewImg]);
   return (
     <div className="container">
       <div className="c_wrap">
@@ -113,7 +145,14 @@ function EgovDownloadCreate() {
 
                 <div className="info2">
                   <div className="left_col">
-                    <img src="/assets/images/sample_pds_list.png" alt="" />
+                    <img
+                      src={
+                        previewImg !== null
+                          ? previewImg
+                          : "/assets/images/sample_pds_list.png"
+                      }
+                      alt=""
+                    />
                     <p className="guide">
                       썸네일 이미지는
                       <br />
@@ -167,7 +206,11 @@ function EgovDownloadCreate() {
                         <label htmlFor="ip4">파일정보</label>
                       </dt>
                       <dd>
-                        <input type="file" onChange={handleImageChange} />
+                        <input
+                          accept=".png, .jpeg, .jpg"
+                          type="file"
+                          onChange={handleImageChange}
+                        />
                       </dd>
                     </dl>
                     {/* <dl>

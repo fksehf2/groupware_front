@@ -81,12 +81,9 @@ function EgovDownloadList() {
                   </span>
                 </li>
                 <li>
-                  <Link
-                    to={URL.SUPPORT_DOWNLOAD_CREATE}
-                    className="btn btn_blue_h46 pd35"
-                  >
+                  <button onClick={create} className="btn btn_blue_h46 pd35">
                     등록
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -100,7 +97,9 @@ function EgovDownloadList() {
                   <button
                     className="btn btn_blue_h46 pd35"
                     onClick={fetchImages}
-                  ></button>
+                  >
+                    등록
+                  </button>
                   <Link to={URL.SUPPORT_DOWNLOAD_DETAIL}>
                     <img src="/assets/images/sample_pds_list.png" alt="" />
                     <span>
