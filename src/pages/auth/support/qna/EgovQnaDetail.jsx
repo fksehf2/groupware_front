@@ -23,7 +23,7 @@ function EgovQnaDetail() {
   const fetchList = async () => {
     // IsLoading(true);
     try {
-      const url = new URL(`http://localhost:8080/getQnaDetail/${num}`);
+      const url = new URL(`http://localhost:8080/qnaDetail/${num}`);
 
       const response = await fetch(url);
 
@@ -43,7 +43,7 @@ function EgovQnaDetail() {
   const fetchComent = async () => {
     // IsLoading(true);
     try {
-      const url = new URL(`http://localhost:8080/getComent/${num}`);
+      const url = new URL(`http://localhost:8080/coment/${num}`);
 
       const response = await fetch(url);
 
@@ -102,7 +102,7 @@ function EgovQnaDetail() {
       regr_ID: sessionUserId,
     };
 
-    const url = new URL("http://localhost:8080/regComnt");
+    const url = new URL("http://localhost:8080/comnt");
     const response = await fetch(url, {
       method: "POST",
       headers: {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { default as EgovLeftNav } from "components/leftmenu/EgovLeftNavSupport";
+import { FaLetterboxd } from "react-icons/fa6";
 
 function EgovDownloadList() {
   const [images, setImages] = useState([]);
@@ -18,6 +19,10 @@ function EgovDownloadList() {
       console.error("Failed to fetch images");
     }
   };
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
   const create = () => {
     navigate("/support/download/create");
@@ -94,12 +99,6 @@ function EgovDownloadList() {
             <div className="pdslist">
               <ul>
                 <li>
-                  <button
-                    className="btn btn_blue_h46 pd35"
-                    onClick={fetchImages}
-                  >
-                    등록
-                  </button>
                   <Link to={URL.SUPPORT_DOWNLOAD_DETAIL}>
                     <img src="/assets/images/sample_pds_list.png" alt="" />
                     <span>

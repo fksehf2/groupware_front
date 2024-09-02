@@ -29,7 +29,7 @@ const EqpMgmtRDtl = () => {
   };
 
   const regEqpMgmt = async () => {
-    const url = new URL("http://localhost:8080/regeqp");
+    const url = new URL("http://localhost:8080/eqp");
 
     const params = new FormData(regForm.current);
     const sendData = {};
